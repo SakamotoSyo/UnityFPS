@@ -31,6 +31,10 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     //お金を表示するテキスト
     [SerializeField] private TextMeshProUGUI MoneyTextNum;
+    //グレネードのスクリプト
+    [SerializeField] private DrawArc _grenadCs;
+    [SerializeField] private ShootBullet _shootBulletCs;
+
 
 
     Quaternion cameraRot, characterRot;
@@ -44,7 +48,7 @@ public class RigidbodyUnityChan : MonoBehaviour
     private bool isDamege = false;
     private float CountTime;
     private float m_WhaleAfterTime;
-    private float CurrentHp;
+    private float CurrentHp; 
 
     [SerializeField] private GameObject subCamera;//サブカメラ格納用
     private Camera subCameraSetActive;
@@ -150,6 +154,14 @@ public class RigidbodyUnityChan : MonoBehaviour
         {
             animator.SetBool("RunBool", false);
         }
+
+        //グレネードを構える
+        if (Input.GetButton("Fire1"))
+        {
+            animator.SetBool("GrenadBool", true);
+           
+        }
+
 
         //ADSしたときの処理
         if (Input.GetMouseButton(1) && !isDamege)
@@ -299,6 +311,15 @@ public class RigidbodyUnityChan : MonoBehaviour
                 m_WhaleAfterTime = 0;
             }
         }
+    }
+
+    /// <summary>
+    /// アニメーションイベントで呼び出す
+    /// </summary>
+    private void GrenadStart() 
+    {
+        _grenadCs.enabled = true;
+        _shootBulletCs.enabled = true;
     }
 
     private void DamegeFalse() => isDamege = false;

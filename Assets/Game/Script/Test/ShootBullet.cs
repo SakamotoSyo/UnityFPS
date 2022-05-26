@@ -63,7 +63,7 @@ public class ShootBullet : MonoBehaviour
             rid.AddForce(shootVelocity * rid.mass, ForceMode.Impulse);
 
             // 5ïbå„Ç…è¡Ç¶ÇÈ
-            Destroy(obj, 5.0F);
+            //Destroy(obj, 5.0F);
         }
     }
 }
