@@ -7,8 +7,8 @@ public class DrawArc : MonoBehaviour
     /// <summary>
     /// •ú•¨ü‚Ì•`‰æON/OFF
     /// </summary>
-    //[SerializeField]
-    private bool drawArc = true;
+    [SerializeField]
+    public bool DrawArcBool = false;
 
     /// <summary>
     /// •ú•¨ü‚ğ\¬‚·‚éü•ª‚Ì”
@@ -84,7 +84,7 @@ public class DrawArc : MonoBehaviour
         initialVelocity = shootBullet.ShootVelocity;
         arcStartPosition = shootBullet.InstantiatePosition;
 
-        if (drawArc)
+        if (DrawArcBool)
         {
             // •ú•¨ü‚ğ•\¦
             float timeStep = predictionTime / segmentCount;

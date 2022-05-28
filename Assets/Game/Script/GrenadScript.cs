@@ -21,7 +21,6 @@ public class GrenadScript : MonoBehaviour
         CountTime += Time.deltaTime;
         if (WaitTime < CountTime) 
         {
-            Debug.Log("aaaa");
             this.gameObject.SetActive(false);
             var GrenadEx = Instantiate(GrenadExploPrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
             Destroy(this.gameObject, 5f);

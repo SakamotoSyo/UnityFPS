@@ -16,22 +16,31 @@ public class RigidbodyUnityChan : MonoBehaviour
     private float Sumx, Sumy, CamNumx, CamNumy;
     private bool Cambool = false;
 
+    [Header("カメラオブジェクト")]
     [SerializeField] private GameObject cam;
     [SerializeField] private GameObject subCam;
+
     [SerializeField] private float wave;
     [SerializeField] private float jumpPower;
     //[SerializeField] private Vector3 CameraVector3;
+    [Header("ガンのオブジェクト")]
     [SerializeField] private GameObject mesh_rot, GunModel, CameraGunModel;
+    [Header("銃痕")]
     [SerializeField] private GameObject bulletHolePrefab;
+    [Header("弾のスクリプト")]
     [SerializeField] private Shooting shotCs;
+    [Header("敵からダメージを受け付ける感覚の長さ")]
     [SerializeField]private  float AttackDamegeWaitTime;
     [SerializeField]private Slider slider;
     //ノックバックするスピード
+    [Header("ノックバックするスピード")]
     [SerializeField]private float m_KnockBackSpeed;
 
     //お金を表示するテキスト
+    [Header("お金を表示するテキスト")]
     [SerializeField] private TextMeshProUGUI MoneyTextNum;
     //グレネードのスクリプト
+    [Header("グレネードのスクリプト")]
     [SerializeField] private DrawArc _grenadCs;
     [SerializeField] private ShootBullet _shootBulletCs;
 
@@ -43,9 +52,12 @@ public class RigidbodyUnityChan : MonoBehaviour
     float Xsensityvity = 3f, Ysensityvity = 3f;
     private Animator animator;
     private Rigidbody rb;
+    private MeshRenderer GunModelMesh;
     public bool EnemyAttack = false;
     private bool jumpNow = false;
     private bool isDamege = false;
+
+    private int _grenadeNum = 0;
     private float CountTime;
     private float m_WhaleAfterTime;
     private float CurrentHp; 
@@ -65,6 +77,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         cameraRot = cam.transform.localRotation;
         subCameraRot = subCam.transform.localRotation;
         characterRot = transform.localRotation;
+        GunModelMesh = GunModel.GetComponent<MeshRenderer>();
         animator = GetComponent<Animator>();
         subCameraSetActive = subCamera.GetComponent<Camera>();
         rb = GetComponent<Rigidbody>();
@@ -72,7 +85,6 @@ public class RigidbodyUnityChan : MonoBehaviour
        
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -155,13 +167,8 @@ public class RigidbodyUnityChan : MonoBehaviour
             animator.SetBool("RunBool", false);
         }
 
-        //グレネードを構える
-        if (Input.GetButton("Fire1"))
-        {
-            animator.SetBool("GrenadBool", true);
-           
-        }
-
+        //グレネードを投げる処理
+        GrenadStart();
 
         //ADSしたときの処理
         if (Input.GetMouseButton(1) && !isDamege)
@@ -261,6 +268,9 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
     }
 
+　　/// <summary>
+    ///ジャンプ処理 
+    /// </summary>
     void Jump()
     {
 
@@ -275,7 +285,6 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     }
 
-    //ノックバックの処理書き方途中かけ
     private void OnTriggerStay(Collider other)
     {
         CountTime += Time.deltaTime;
@@ -313,14 +322,29 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// アニメーションイベントで呼び出す
-    /// </summary>
+    /// <summary> グレネードを投げる処理 </summary>
     private void GrenadStart() 
     {
-        _grenadCs.enabled = true;
-        _shootBulletCs.enabled = true;
+
+        //グレネードを構える
+        if (Input.GetButton("Fire1"))
+        {
+            animator.SetBool("GrenadBool", true);
+            GunModelMesh.enabled = false;
+            _grenadCs.DrawArcBool = true;
+
+        }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            animator.SetBool("GrenadBool", false);
+            animator.Play("GrenadeThrow");
+            GunModelMesh.enabled = true;
+            _grenadCs.DrawArcBool = false;
+
+        }
     }
+
 
     private void DamegeFalse() => isDamege = false;
 }

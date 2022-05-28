@@ -55,7 +55,7 @@ public class ShootBullet : MonoBehaviour
         instantiatePosition = barrelObject.transform.position;
 
         // ”­Ë
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetButtonUp("Fire1"))
         {
             // ’e‚ğ¶¬‚µ‚Ä”ò‚Î‚·
             GameObject obj = Instantiate(bulletPrefab, instantiatePosition, Quaternion.identity);
