@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class ItemPanelButtonScipt : MonoBehaviour, ISelectHandler
 {
@@ -11,6 +12,7 @@ public class ItemPanelButtonScipt : MonoBehaviour, ISelectHandler
     [SerializeField] private Shooting _shootingCs;
     [SerializeField] private UnityChanStatus _statusCs;
 
+    [SerializeField] private TextMeshProUGUI _bulletNum;
     [Header("インフォメーションの画像")]
     [SerializeField] private Image _informationImageObject;
     [Header("このアイテムのイメージ画像")]
@@ -45,12 +47,12 @@ public class ItemPanelButtonScipt : MonoBehaviour, ISelectHandler
         if (itemName == "Grenade")
         {
             _playerCs.GrenadeNum++;
-            _statusCs.SetMoney(_statusCs.GetMoney() - _GrenadPrice);
+            _statusCs.SetMoney(-_GrenadPrice);
         }
         else if (itemName == "Amo") 
         {
             _shootingCs.shotCount += 30;
-            _statusCs.SetMoney(_statusCs.GetMoney() - _assaultAmoPrice);
+            _statusCs.SetMoney(-_assaultAmoPrice);
         }
     }
 

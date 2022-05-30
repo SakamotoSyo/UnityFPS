@@ -198,6 +198,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         CamNumx = 0;
         CamNumy = 0;
         animator.SetBool("Damage", isDamege);
+        _granedNumText.text = GrenadeNum.ToString();
 
         //‚¨‹à‚ð•\Ž¦‚³‚¹‚é
         MoneyTextNum.text =  allyStatus.GetMoney().ToString();
@@ -343,7 +344,6 @@ public class RigidbodyUnityChan : MonoBehaviour
             animator.SetBool("GrenadBool", false);
             animator.Play("GrenadeThrow");
             GrenadeNum--;
-            _granedNumText.text =  GrenadeNum.ToString();
             GunModelMesh.enabled = true;
             _grenadCs.DrawArcBool = false;
 

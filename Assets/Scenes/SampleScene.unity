@@ -7645,12 +7645,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134395498}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43f68e64b34ee07469c5a8acc2335d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardNumImages: {fileID: 0}
+  _weaponShop: {fileID: 1452325890}
+  _enemySpawnScript: {fileID: 863767023}
   MoneyCardNum: 0
   GunCardNumn: 0
   ZonbieCardNum: 0
@@ -12234,7 +12235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.3, y: 0.4}
+  m_AnchoredPosition: {x: 1.300003, y: 0.39999056}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &334151789
@@ -17558,7 +17559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -23116,7 +23117,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825577741}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -23126,7 +23127,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.4191895, y: -4.2650423}
+  m_AnchoredPosition: {x: 4.4191895, y: -4.2650375}
   m_SizeDelta: {x: 84.52773, y: 79.94714}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &825577743
@@ -23172,7 +23173,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 825577744}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 993331202}
+        m_TargetAssemblyTypeName: CardShopScript, Assembly-CSharp
+        m_MethodName: WeaponShopOpen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &825577744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23194,7 +23207,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -23845,6 +23858,7 @@ MonoBehaviour:
   raundType: 0
   RaundCanvasObject: {fileID: 1947806810}
   ShopImageObject: {fileID: 993331200}
+  _weaponShopImage: {fileID: 574354001}
   CardPrefabList:
   - {fileID: 8294892128858270884, guid: 0504272ad08f19142805425ba318b5fb, type: 3}
   - {fileID: 3813223297360261849, guid: 807799f4aa7ec8447a261609bab3f9bf, type: 3}
@@ -26296,7 +26310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &993331201
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26335,7 +26349,8 @@ MonoBehaviour:
   allyStatus: {fileID: 11400000, guid: f84be485e1cd0574bbb0219b3dc264d6, type: 2}
   m_informationText: {fileID: 104594406}
   CardShopPrice: 500
-  _weaponShopObject: {fileID: 0}
+  _weaponShopObject: {fileID: 1452325890}
+  _cardShopObject: {fileID: 993331200}
 --- !u!114 &993331203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26343,12 +26358,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 993331200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43f68e64b34ee07469c5a8acc2335d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardNumImages: {fileID: 0}
+  _weaponShop: {fileID: 1452325890}
+  _enemySpawnScript: {fileID: 863767023}
   MoneyCardNum: 0
   GunCardNumn: 0
   ZonbieCardNum: 0
@@ -36485,6 +36501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1452325891}
   - component: {fileID: 1452325893}
+  - component: {fileID: 1452325894}
   - component: {fileID: 1452325892}
   m_Layer: 5
   m_Name: WeaponShop
@@ -36553,6 +36570,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452325890}
   m_CullTransparentMesh: 1
+--- !u!114 &1452325894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452325890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f68e64b34ee07469c5a8acc2335d65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponShop: {fileID: 1452325890}
+  _enemySpawnScript: {fileID: 863767023}
+  MoneyCardNum: 0
+  GunCardNumn: 0
+  ZonbieCardNum: 0
 --- !u!1001 &1456237529
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField] private GameObject RaundCanvasObject;
     //ショップイメージの親のオブジェクト
     [SerializeField] private GameObject ShopImageObject;
+    [SerializeField] private GameObject _weaponShopImage;
     //カードのプレハブのリスト
     [Header("カード")][SerializeField]private List<GameObject> CardPrefabList = new List<GameObject>();
     [SerializeField] private GameObject CardPosition;
@@ -130,6 +131,7 @@ public class EnemySpawnScript : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.B) && raundType == RaundType.StandardRaund) 
             {
                 ShopImageObject.SetActive(true);
+                _weaponShopImage.SetActive(true);   
                 raundType = RaundType.ShopSelect;
             }
 
