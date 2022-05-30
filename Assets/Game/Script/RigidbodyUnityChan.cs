@@ -43,7 +43,10 @@ public class RigidbodyUnityChan : MonoBehaviour
     [Header("グレネードのスクリプト")]
     [SerializeField] private DrawArc _grenadCs;
     [SerializeField] private ShootBullet _shootBulletCs;
-
+    [Header("グレネードを持っている数")]
+    public int GrenadeNum = 0;
+    [Header("グレネードの数を表示するテキスト")]
+    [SerializeField] private TextMeshProUGUI _granedNumText;
 
 
     Quaternion cameraRot, characterRot;
@@ -57,7 +60,7 @@ public class RigidbodyUnityChan : MonoBehaviour
     private bool jumpNow = false;
     private bool isDamege = false;
 
-    private int _grenadeNum = 0;
+   
     private float CountTime;
     private float m_WhaleAfterTime;
     private float CurrentHp; 
@@ -82,7 +85,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         subCameraSetActive = subCamera.GetComponent<Camera>();
         rb = GetComponent<Rigidbody>();
 
-       
+        _granedNumText.text = GrenadeNum.ToString();
     }
 
     void Update()
@@ -327,18 +330,20 @@ public class RigidbodyUnityChan : MonoBehaviour
     {
 
         //グレネードを構える
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && GrenadeNum > 0)
         {
             animator.SetBool("GrenadBool", true);
             GunModelMesh.enabled = false;
             _grenadCs.DrawArcBool = true;
 
         }
-
-        if (Input.GetButtonUp("Fire1"))
+        //ボタンを離した時に呼ばれる
+        if (Input.GetButtonUp("Fire1") && GrenadeNum > 0)
         {
             animator.SetBool("GrenadBool", false);
             animator.Play("GrenadeThrow");
+            GrenadeNum--;
+            _granedNumText.text =  GrenadeNum.ToString();
             GunModelMesh.enabled = true;
             _grenadCs.DrawArcBool = false;
 

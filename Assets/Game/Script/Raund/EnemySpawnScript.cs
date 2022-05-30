@@ -157,17 +157,6 @@ public class EnemySpawnScript : MonoBehaviour
         pd.Play();
     }
 
-   /// <summary>
-   /// テスト用
-   /// </summary>
-   private void RamdomSpawn()
-    {
-        var a = UnityEngine.Random.Range(0, spawnChildren.Length);
-
-        GameObject zombie = Instantiate(zombiePrefab, spawnChildren[a].transform.position, spawnChildren[a].transform.rotation);
-    }
-
-
     /// <summary>
     /// ラウンド管理
     /// </summary>

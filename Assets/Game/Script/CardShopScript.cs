@@ -11,6 +11,8 @@ public class CardShopScript : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI m_informationText;
     [SerializeField] private float CardShopPrice = 500;
+    //ショップのオブジェクト
+    [SerializeField] private GameObject _weaponShopObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,5 +42,10 @@ public class CardShopScript : MonoBehaviour
             m_informationText.text = "お金が足りません";
         }
         
+    }
+
+    public void WeaponShopOpen() 
+    {
+
     }
 }

@@ -28,6 +28,9 @@ public class ShootBullet : MonoBehaviour
         get { return instantiatePosition; }
     }
 
+    //プレイヤーのスクリプト
+    [SerializeField] private RigidbodyUnityChan _playerCS;
+
     /// <summary>
     /// 弾の速さ
     /// </summary>
@@ -55,7 +58,7 @@ public class ShootBullet : MonoBehaviour
         instantiatePosition = barrelObject.transform.position;
 
         // 発射
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetButtonUp("Fire1") && _playerCS.GrenadeNum > 0)
         {
             // 弾を生成して飛ばす
             GameObject obj = Instantiate(bulletPrefab, instantiatePosition, Quaternion.identity);
