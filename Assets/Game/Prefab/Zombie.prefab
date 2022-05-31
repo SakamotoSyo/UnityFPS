@@ -231,6 +231,11 @@ MonoBehaviour:
   player: {fileID: 0}
   rbUnity: {fileID: 0}
   enemyStatus: {fileID: 11400000, guid: 5355dee44caab3940bce51f317d8f516, type: 2}
+  _shootingCs: {fileID: 0}
+  _enemySpawnScriptCs: {fileID: 0}
+  _zombieDeadPrefab: {fileID: 4190003735002222823, guid: 45f45d6753e68ba4aaf219098753f664, type: 3}
+  _WhaleDeadPrefab: {fileID: 7448219726720947364, guid: 3e1bba6b1c9487c4cb1e22aa86a2d7c5, type: 3}
+  _grenadeDamege: 50000
   WhaleAttackPrefab: {fileID: 0}
   WhaleShotingObject: {fileID: 0}
 --- !u!54 &7805326160554440235
@@ -312,7 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHp: 1000
-  hp: 10
+  hp: 100
   power: 10
   agility: 1
   money: 100

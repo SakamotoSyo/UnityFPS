@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4180726476906586464}
   - component: {fileID: 4180726476892431392}
   - component: {fileID: 4180726476892528000}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4924,7 +4924,7 @@ GameObject:
   - component: {fileID: 4180726476906586466}
   - component: {fileID: 4180726476892431394}
   - component: {fileID: 4180726476892528002}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dot Sparkles Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9788,7 +9788,7 @@ GameObject:
   - component: {fileID: 4180726476906586470}
   - component: {fileID: 4180726476892431398}
   - component: {fileID: 4180726476892528006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Glow Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14563,7 +14563,7 @@ GameObject:
   - component: {fileID: 4180726476906586472}
   - component: {fileID: 4180726476892431400}
   - component: {fileID: 4180726476892528008}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14843,7 +14843,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -14896,7 +14896,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -14949,7 +14949,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -15002,7 +15002,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -19235,7 +19235,7 @@ GameObject:
   - component: {fileID: 4180726476906586474}
   - component: {fileID: 4180726476892431402}
   - component: {fileID: 4180726476892528010}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dot Sparkles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19506,7 +19506,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -19559,7 +19559,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -24100,7 +24100,7 @@ GameObject:
   - component: {fileID: 4180726476892431404}
   - component: {fileID: 4180726476892528012}
   - component: {fileID: 4180726476917541034}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExposionsGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27664,9 +27664,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
-    type: 0
+    type: 1
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
@@ -27847,11 +27847,11 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
     inside: 1
     outside: 0
@@ -28894,7 +28894,7 @@ GameObject:
   - component: {fileID: 4180726476906586478}
   - component: {fileID: 4180726476892431406}
   - component: {fileID: 4180726476892528014}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Glow sparkles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
