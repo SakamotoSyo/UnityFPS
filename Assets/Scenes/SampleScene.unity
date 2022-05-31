@@ -10592,6 +10592,7 @@ MonoBehaviour:
   subCam: {fileID: 333932685}
   wave: 0
   jumpPower: 6.19
+  _grenadDamege: 20
   mesh_rot: {fileID: 242483421}
   GunModel: {fileID: 37476904}
   CameraGunModel: {fileID: 486338149}
@@ -10603,8 +10604,9 @@ MonoBehaviour:
   MoneyTextNum: {fileID: 1538179945}
   _grenadCs: {fileID: 280248437}
   _shootBulletCs: {fileID: 280248436}
-  GrenadeNum: 10
+  GrenadeNum: 100000
   _granedNumText: {fileID: 1461961274}
+  ZonbieCardNum: 0
   EnemyAttack: 0
   subCamera: {fileID: 333932685}
 --- !u!114 &280248428
@@ -23876,7 +23878,7 @@ MonoBehaviour:
   OnBreak: {fileID: 1053089905}
   SpawnTime: 1
   BreakWaitTime: 5000
-  isdestruction: 1
+  isdestruction: 0
   EnemyDestroyCount: 0
   BasicZombieNum: 20
 --- !u!1001 &867900774
@@ -24104,7 +24106,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 875370924}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 875370926}
+        m_TargetAssemblyTypeName: ItemPanelButtonScipt, Assembly-CSharp
+        m_MethodName: BuyItem
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Grenade
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &875370924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24155,12 +24169,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0547644dda6027246be884cb3c822bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerCs: {fileID: 0}
-  _shootingCs: {fileID: 0}
-  _statusCs: {fileID: 0}
+  _playerCs: {fileID: 280248427}
+  _shootingCs: {fileID: 486338151}
+  _statusCs: {fileID: 11400000, guid: f84be485e1cd0574bbb0219b3dc264d6, type: 2}
+  _bulletNum: {fileID: 0}
   _informationImageObject: {fileID: 833199960}
   _informationSprite: {fileID: 21300000, guid: c0d15770a0da650418dc74ebc1f0a2b6, type: 3}
-  _GrenadPrice: 0
+  _GrenadPrice: 500
   _assaultAmoPrice: 0
 --- !u!1001 &883771648
 PrefabInstance:
@@ -26310,7 +26325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &993331201
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28293,7 +28308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHp: 1000
-  hp: 10
+  hp: 1000
   power: 10
   agility: 0
   money: 0
@@ -28478,6 +28493,10 @@ MonoBehaviour:
   player: {fileID: 280248426}
   rbUnity: {fileID: 0}
   enemyStatus: {fileID: 0}
+  _enemySpawnScriptCs: {fileID: 0}
+  _zombieDeadPrefab: {fileID: 0}
+  _WhaleDeadPrefab: {fileID: 0}
+  _grenadeDamege: 0
   WhaleAttackPrefab: {fileID: 1119534783604652725, guid: b14feeaa5028d5f44b8591b0f600d898, type: 3}
   WhaleShotingObject: {fileID: 1034658207}
 --- !u!1 &1086363542
@@ -41940,7 +41959,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1716612683}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1716612682}
+        m_TargetAssemblyTypeName: ItemPanelButtonScipt, Assembly-CSharp
+        m_MethodName: BuyItem
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Amo
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1716612682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41953,13 +41984,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0547644dda6027246be884cb3c822bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerCs: {fileID: 0}
-  _shootingCs: {fileID: 0}
-  _statusCs: {fileID: 0}
+  _playerCs: {fileID: 280248427}
+  _shootingCs: {fileID: 486338151}
+  _statusCs: {fileID: 11400000, guid: f84be485e1cd0574bbb0219b3dc264d6, type: 2}
+  _bulletNum: {fileID: 0}
   _informationImageObject: {fileID: 833199960}
   _informationSprite: {fileID: 21300000, guid: 8910d47bc608d0249bc7b819af36d9f6, type: 3}
   _GrenadPrice: 0
-  _assaultAmoPrice: 0
+  _assaultAmoPrice: 40
 --- !u!114 &1716612683
 MonoBehaviour:
   m_ObjectHideFlags: 0

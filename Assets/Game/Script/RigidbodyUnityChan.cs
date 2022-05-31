@@ -22,6 +22,9 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     [SerializeField] private float wave;
     [SerializeField] private float jumpPower;
+    //グレネードのダメージ
+    [Header("グレネードのダメージ")]
+    [SerializeField]private float _grenadDamege;
     //[SerializeField] private Vector3 CameraVector3;
     [Header("ガンのオブジェクト")]
     [SerializeField] private GameObject mesh_rot, GunModel, CameraGunModel;
@@ -52,6 +55,7 @@ public class RigidbodyUnityChan : MonoBehaviour
     Quaternion cameraRot, characterRot;
     Quaternion subCameraRot;
 
+    public float ZonbieCardNum;
     float Xsensityvity = 3f, Ysensityvity = 3f;
     private Animator animator;
     private Rigidbody rb;
@@ -347,6 +351,19 @@ public class RigidbodyUnityChan : MonoBehaviour
             GunModelMesh.enabled = true;
             _grenadCs.DrawArcBool = false;
 
+        }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        //Debug.Log("effknewfvbkevnlews");
+
+        if (other.layer == 6)
+        {
+            allyStatus.SetHp(-_grenadDamege);
+            slider.value = (float)CurrentHp / (float)allyStatus.GetMaxHp();
+            CurrentHp = allyStatus.GetHp();
+            Debug.Log("ddd");
         }
     }
 

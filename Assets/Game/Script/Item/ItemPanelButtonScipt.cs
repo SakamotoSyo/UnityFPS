@@ -46,13 +46,21 @@ public class ItemPanelButtonScipt : MonoBehaviour, ISelectHandler
     {
         if (itemName == "Grenade")
         {
-            _playerCs.GrenadeNum++;
-            _statusCs.SetMoney(-_GrenadPrice);
+            if (_statusCs.GetMoney() - _GrenadPrice > 0) 
+            {
+                _playerCs.GrenadeNum++;
+                _statusCs.SetMoney(-_GrenadPrice);
+            }
+            
         }
         else if (itemName == "Amo") 
         {
-            _shootingCs.shotCount += 30;
-            _statusCs.SetMoney(-_assaultAmoPrice);
+            if (_statusCs.GetMoney() - _assaultAmoPrice > 0) 
+            {
+                _shootingCs.shotCount += 30;
+                _statusCs.SetMoney(-_assaultAmoPrice);
+            }
+            
         }
     }
 

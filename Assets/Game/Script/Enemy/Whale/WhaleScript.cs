@@ -16,7 +16,7 @@ public class WhaleScript : MonoBehaviour
         {
             zombie.WhaleTriggerChack("Spit");
         }
-        else
+        else if(other.gameObject.CompareTag("Player") && Vector3.Distance(this.gameObject.transform.position, m_UnityChan.transform.position) < 1.5f)
         {
             zombie.WhaleTriggerChack("Tail");
         }

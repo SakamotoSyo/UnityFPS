@@ -7,7 +7,14 @@ public class ZombieScript : MonoBehaviour
 {
     [SerializeField][Tooltip("追いかける対象")]private GameObject player;
     [SerializeField] private RigidbodyUnityChan rbUnity;
-    public EnemyStatus enemyStatus;
+    [SerializeField] private EnemyStatus enemyStatus;
+    [SerializeField] private EnemySpawnScript _enemySpawnScriptCs;
+
+    [SerializeField] private GameObject _zombieDeadPrefab;
+    [SerializeField] private GameObject _WhaleDeadPrefab;
+    //グレネードのダメージ
+    [Header("グレネードのダメージ")]
+    [SerializeField] private float _grenadeDamege;
     //WhaleEnemy
     [SerializeField]private GameObject WhaleAttackPrefab;
     [SerializeField]private GameObject WhaleShotingObject;
@@ -32,11 +39,15 @@ public class ZombieScript : MonoBehaviour
     private void Start()
     {
         player = GameObject.Find("UnityChan");
+        enemyStatus = GetComponent<EnemyStatus>();
+      
+        _enemySpawnScriptCs = GameObject.Find("SpawnGameObject").GetComponent<EnemySpawnScript>();
         rbUnity = player.GetComponent<RigidbodyUnityChan>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         navMeshAgent.speed = 2f;
-        
+
+        enemyStatus.SetHp((enemyStatus.GetHp() * (1 - rbUnity.ZonbieCardNum)) - enemyStatus.GetHp() );
     }
 
     private void Update()
@@ -49,7 +60,11 @@ public class ZombieScript : MonoBehaviour
         anim.SetFloat("Speed", navMeshAgent.desiredVelocity.magnitude);
         anim.SetBool("Damege", isDamage);
         anim.SetBool("Attack", isAttack);
-        anim.SetBool("TailAttack", m_TailAttack);
+        if (gameObject.tag == "Whale") 
+        {
+            anim.SetBool("TailAttack", m_TailAttack);
+        }
+        
 
         
         countTime += Time.deltaTime;
@@ -156,6 +171,35 @@ public class ZombieScript : MonoBehaviour
             m_TailAttack = true;
             AttackFrag = true;
             countTime = 0;
+        }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        if (other.layer == 6) 
+        {
+            enemyStatus.SetHp(-_grenadeDamege);
+            if (enemyStatus.GetHp() <= 0) 
+            {
+                
+                rbUnity.allyStatus.SetMoney(enemyStatus.GetMoney());
+
+                //Enemyのオブジェクトを消してPrefabを呼び出す
+                this.gameObject.SetActive(false);
+                if (this.gameObject.tag == "Zombie")
+                {
+                    var zombie = Instantiate(_zombieDeadPrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+                }
+                else if (this.gameObject.tag == "Whale")
+                {
+                    var shale = Instantiate(_WhaleDeadPrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+                }
+
+                Destroy(this.gameObject, 5f);
+                _enemySpawnScriptCs.EnemyDestroyCount++;
+                Debug.Log("aff");
+
+            }
         }
     }
 }

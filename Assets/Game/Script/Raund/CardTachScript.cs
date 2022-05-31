@@ -11,6 +11,7 @@ public class CardTachScript : MonoBehaviour ,ISelectHandler
 {
     [SerializeField] private Shooting shootingCs;
     [SerializeField]private GameObject shootingObject;
+    [SerializeField] private RigidbodyUnityChan _rbPlayer;
    
 
     [SerializeField]private PlayableAsset CardReternAnim;
@@ -33,6 +34,7 @@ public class CardTachScript : MonoBehaviour ,ISelectHandler
     {
         shootingObject = GameObject.Find("UnityChan/SubCamera/SubSciFiGunLightBlue");
         _shopObject = GameObject.Find("RoundCanvas/CardShop");
+        _rbPlayer = GameObject.Find("UnityChan").GetComponent<RigidbodyUnityChan>();
         _enemySpawnScript = GameObject.Find("SpawnGameObject").GetComponent<EnemySpawnScript>();
         anim = GetComponent<Animator>();    
         shootingCs = shootingObject.GetComponent<Shooting>();
@@ -141,7 +143,7 @@ public class CardTachScript : MonoBehaviour ,ISelectHandler
 
         if (this.gameObject.tag == "ZombieCard" && CardNameNumImage["ZombieCard"] < 5)
         {
-            shootingCs.m_CardShotPowerEffect += 0.1f;
+            _rbPlayer.ZonbieCardNum += 0.1f;
             CardNameNumImage["ZombieCard"] = CardNameNumImage["ZombieCard"] + 1;
 
             _cardManager.ZonbieCardNum++;
