@@ -10,6 +10,7 @@ public class Shooting : MonoBehaviour
     [SerializeField] private Camera _cam;
     //弾のプレハブ
     [SerializeField]private GameObject bulletPrefab;
+    [SerializeField] private GameObject _bulletMuzzule;
     //ショットのマズル
     [SerializeField] private GameObject　shoting;
     //マズルフラッシュを出す位置
@@ -80,7 +81,7 @@ public class Shooting : MonoBehaviour
                     BulletNum.text = shotCount.ToString();
 
                     Vector3 bulletPosition = shoting.transform.position;
-                    GameObject bullet = (GameObject)Instantiate(bulletPrefab, bulletPosition, transform.rotation);
+                    GameObject bullet = (GameObject)Instantiate(bulletPrefab, bulletPosition, _bulletMuzzule.transform.rotation);
                     //this.gameObject.transform.rotation = Quaternion.AngleAxis(-1.0f, this.gameObject.transform.right) * this.gameObject.transform.rotation;
                     muzzuleFlashParticle.Play();
                     _cam.transform.rotation = Quaternion.AngleAxis(-1.0f, _cam.transform.right) * _cam.transform.rotation;
@@ -120,9 +121,10 @@ public class Shooting : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(shoting.transform.position, shoting.transform.forward, out hit, 100f))
         {
-            var bulletHoleInstance = Instantiate<GameObject>(bulletHolePrefab, hit.point - shoting.transform.forward * 0.001f, Quaternion.FromToRotation(Vector3.up, hit.normal), hit.collider.transform);
+            //var bulletHoleInstance = Instantiate<GameObject>(bulletHolePrefab, hit.point - shoting.transform.forward * 0.001f, Quaternion.FromToRotation(Vector3.up, hit.normal), hit.collider.transform);
             if (hit.collider.tag == "Zombie" || hit.collider.tag == "Whale")
             {
+                Debug.Log("cfjioefvlek");
                 //ヒットした敵のスクリプトを取得
                 var EnemyStatusScript = hit.collider.gameObject.GetComponent<EnemyStatus>();
                 EnemyStatusScript.SetHp(EnemyStatusScript.GetHp() * CardZombieHelseEffect);
@@ -179,6 +181,11 @@ public class Shooting : MonoBehaviour
             MaxBulletNumText.text = MaxBulletNum.ToString();
             ReloadBool = false;
         }
+
+    }
+
+    private void Dead() 
+    { 
 
     }
 
