@@ -47,7 +47,7 @@ public class ZombieScript : MonoBehaviour
         anim = GetComponent<Animator>();
         navMeshAgent.speed = 2f;
 
-        enemyStatus.SetHp((enemyStatus.GetHp() * (1 - rbUnity.ZonbieCardNum)) - enemyStatus.GetHp() );
+       enemyStatus.SetHp((enemyStatus.GetHp() * (1 - rbUnity.ZonbieCardNum)));
     }
 
     private void Update()

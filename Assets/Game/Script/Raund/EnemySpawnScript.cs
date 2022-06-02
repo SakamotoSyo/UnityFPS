@@ -39,7 +39,9 @@ public class EnemySpawnScript : MonoBehaviour
     //子オブジェクト
     private GameObject[] spawnChildren;
     //ゾンビのプレハブ
-    [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private GameObject _zombiePrefab;
+    //サメのプレハブ
+    [SerializeField] private GameObject _whalePrefab;
 
     //ラウンド数を表示するテキスト
     [SerializeField]private TextMeshProUGUI RaundNumText;
@@ -71,7 +73,13 @@ public class EnemySpawnScript : MonoBehaviour
     //追加したゾンビのウェーブ倍率がかかった後の数字
     private int AddZombies = 0;
     //追加のゾンビカウント
-    private int AdditionalCount;
+    private int _additionalZombieCount;
+    //追加のサメ
+    private int _additionalWhale = 1;
+    //追加したサメのウェーブ倍率がかかった後の数字
+    private int _addWhale = 2;
+    //追加のサメカウント
+    private int _additionalWhaleCount;
     //敵の合計
     private int totalEnemy;
     //敵がどれだけ倒されたか
@@ -103,50 +111,7 @@ public class EnemySpawnScript : MonoBehaviour
             WaveStart(WaveCount);
         }
 
-        //ラウンド開始テスト用
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            isdestruction = false;
-        }
-
-        //ゾンビを全滅させたら
-        if (isdestruction) 
-        {
-          
-            //BreakBool = false;  
-            //休憩時間の計測
-            BreakTimeText.text = BreakWaitTime.ToString("f1");
-            if (!BreakBool && BreakWaitTime == BreakWaitCountTime && isdestruction) 
-            {
-                BreakTimeObject.SetActive(true);
-                OnBreak.SetActive(true);
-                BreakBool = true;
-               
-            }
-
-            BreakWaitTime -= Time.deltaTime;
-
-           
-            //buyシステム
-            if (Input.GetKeyDown(KeyCode.B) && raundType == RaundType.StandardRaund) 
-            {
-                ShopImageObject.SetActive(true);
-                _weaponShopImage.SetActive(true);   
-                raundType = RaundType.ShopSelect;
-            }
-
-            //休憩時間が終わったら
-            if (BreakWaitTime <= 0) 
-            {
-                isdestruction = false;
-                BreakWaitTime = 50;
-                BreakBool = false;
-                OnBreak.SetActive(false);
-
-
-            }
-        }
-
+        breakTime();
     }
 
     //タイムラインにアニメーションをセットする
@@ -175,8 +140,10 @@ public class EnemySpawnScript : MonoBehaviour
             var WaveRandom = UnityEngine.Random.Range(WaveNum, WaveNum + 0.9f);
             //追加される敵の数を計算
             AddZombies = (int)Mathf.Floor(WaveRandom) * AdditionalZombies;
+            //追加されるサメ
+            _addWhale = (int)Mathf.Floor(WaveRandom) * _additionalWhale;
             //合計の敵の数
-            totalEnemy = BasicZombieNum + AddZombies;
+            totalEnemy = BasicZombieNum + AddZombies + _addWhale;
             
 
             //ラウンドの最低スポーン。
@@ -186,7 +153,7 @@ public class EnemySpawnScript : MonoBehaviour
                 //ランダムな場所にスポーンさせる
                 var RandomPlace = UnityEngine.Random.Range(0, spawnChildren.Length);
 
-                GameObject zombie = Instantiate(zombiePrefab, spawnChildren[RandomPlace].transform.position, spawnChildren[RandomPlace].transform.rotation);
+                GameObject zombie = Instantiate(_zombiePrefab, spawnChildren[RandomPlace].transform.position, spawnChildren[RandomPlace].transform.rotation);
             }
 
             isWaveStartOne = true;
@@ -196,23 +163,31 @@ public class EnemySpawnScript : MonoBehaviour
         if (SpawnTime < Count)
         {
             //追加でゾンビをスポーンさせる
-            if (AddZombies > AdditionalCount)
+            if (AddZombies > _additionalZombieCount)
             {
                 //ランダムな場所にスポーンさせる
                 var RandomPlace = UnityEngine.Random.Range(0, spawnChildren.Length);
                 
-                GameObject zombie = Instantiate(zombiePrefab, spawnChildren[RandomPlace].transform.position,spawnChildren[RandomPlace].transform.rotation);
-                AdditionalCount++;
+                GameObject zombie = Instantiate(_zombiePrefab, spawnChildren[RandomPlace].transform.position,spawnChildren[RandomPlace].transform.rotation);
+                _additionalZombieCount++;
 
             }
-            else if(totalEnemy == EnemyDestroyCount)
+            if (_addWhale > _additionalWhaleCount) 
+            {
+                Debug.Log("呼ばれた");
+                var RandomPlace = UnityEngine.Random.Range(0, spawnChildren.Length);
+                GameObject whale = Instantiate(_whalePrefab, spawnChildren[RandomPlace].transform.position, spawnChildren[RandomPlace].transform.rotation);
+                _additionalWhaleCount++;
+            }
+            else if (totalEnemy == EnemyDestroyCount)
             {
                 //敵が全滅したかどうか
                 isdestruction = true;
                 isWaveStartOne = false;
                 WaveCount++;
                 AddZombies = 0;
-                AdditionalCount = 0;    
+                _additionalZombieCount = 0;
+                _additionalWhaleCount = 0;
                 EnemyDestroyCount = 0;
                 totalEnemy = 0;
                 Debug.Log("ウェーブが終わりました");
@@ -261,5 +236,47 @@ public class EnemySpawnScript : MonoBehaviour
         }
     }
 
-   
+    /// <summary>
+    /// 休憩時間
+    /// </summary>
+    private void breakTime() 
+    {
+        //ゾンビを全滅させたら
+        if (isdestruction)
+        {
+
+            //BreakBool = false;  
+            //休憩時間の計測
+            BreakTimeText.text = BreakWaitTime.ToString("f1");
+            if (!BreakBool && BreakWaitTime == BreakWaitCountTime && isdestruction)
+            {
+                BreakTimeObject.SetActive(true);
+                OnBreak.SetActive(true);
+                BreakBool = true;
+
+            }
+
+            BreakWaitTime -= Time.deltaTime;
+
+
+            //buyシステム
+            if (Input.GetKeyDown(KeyCode.B) && raundType == RaundType.StandardRaund)
+            {
+                ShopImageObject.SetActive(true);
+                _weaponShopImage.SetActive(true);
+                raundType = RaundType.ShopSelect;
+            }
+
+            //休憩時間が終わったら
+            if (BreakWaitTime <= 0)
+            {
+                isdestruction = false;
+                BreakWaitTime = 25;
+                BreakBool = false;
+                OnBreak.SetActive(false);
+
+
+            }
+        }
+    }
 }

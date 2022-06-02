@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class WhaleScript : MonoBehaviour
 {
-    [SerializeField] private ZombieScript zombie;
-    [SerializeField] private GameObject m_UnityChan;
+    private ZombieScript zombie;
+    private GameObject m_UnityChan;
     
-    [SerializeField] private SphereCollider m_Collider;
+    private SphereCollider m_Collider;
+
+    private void Start()
+    {
+        zombie = GetComponent<ZombieScript>();
+        m_UnityChan = GameObject.Find("UnityChan");
+        m_Collider = GetComponent<SphereCollider>();
+    }
 
     private void OnTriggerStay(Collider other)
     {

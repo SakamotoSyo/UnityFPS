@@ -1578,6 +1578,10 @@ GameObject:
   - component: {fileID: 4966882227996262877}
   - component: {fileID: 4966882227996262875}
   - component: {fileID: 4966882227996262855}
+  - component: {fileID: 7047726475676360389}
+  - component: {fileID: 7356454049538525829}
+  - component: {fileID: 8020842866399399146}
+  - component: {fileID: 936075241545180353}
   m_Layer: 0
   m_Name: Whale
   m_TagString: Whale
@@ -1637,6 +1641,10 @@ MonoBehaviour:
   player: {fileID: 0}
   rbUnity: {fileID: 0}
   enemyStatus: {fileID: 0}
+  _enemySpawnScriptCs: {fileID: 0}
+  _zombieDeadPrefab: {fileID: 0}
+  _WhaleDeadPrefab: {fileID: 7448219726720947364, guid: 3e1bba6b1c9487c4cb1e22aa86a2d7c5, type: 3}
+  _grenadeDamege: 0
   WhaleAttackPrefab: {fileID: 1119534783604652725, guid: b14feeaa5028d5f44b8591b0f600d898, type: 3}
   WhaleShotingObject: {fileID: 4966882229281109967}
 --- !u!136 &4966882227996262851
@@ -1731,6 +1739,61 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7047726475676360389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4966882227996262872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c208bda8968a345adf596b834703bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7356454049538525829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4966882227996262872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbe6a86d7c1b8c4c898968230450a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHp: 1000
+  hp: 100
+  power: 10
+  agility: 0
+  money: 0
+--- !u!135 &8020842866399399146
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4966882227996262872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.2
+  m_Center: {x: 0, y: 1.6742127, z: -0.52}
+--- !u!135 &936075241545180353
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4966882227996262872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.38
+  m_Center: {x: 0, y: 2.08, z: 3.54}
 --- !u!1 &4966882227996262874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,4 +1948,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c208bda8968a345adf596b834703bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zombie: {fileID: 4966882227996262853}

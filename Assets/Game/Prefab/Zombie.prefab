@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHp: 1000
-  hp: 1
+  hp: 50
   power: 10
   agility: 1
   money: 100

@@ -26,10 +26,16 @@ public class Shooting : MonoBehaviour
     //マネーカードの効果
     public float MoneyCardEffectNum = 1;
 
+    //オーディオ関連
+    [SerializeField] private AudioClip _bulletAudio;
+    [SerializeField] private AudioSource _audioSource;
+
     [SerializeField]public float ReloedTime = 30;
     [SerializeField]private float shotInterval;
     [SerializeField] private float ReloadInterval;
     [SerializeField] private GameObject bulletHolePrefab;
+    //[SerializeField] private 
+
     public float shotTime;
     [SerializeField] ParticleSystem muzzuleFlashParticle;
     [SerializeField] GameObject bulletHitEffectPrefab;
@@ -54,6 +60,7 @@ public class Shooting : MonoBehaviour
     private void Start()
     {
         MaxBulletNumText.text = MaxBulletNum.ToString();
+
     }
     // Update is called once per frame
     void Update()
@@ -118,13 +125,17 @@ public class Shooting : MonoBehaviour
 
     private void Shot() 
     {
+        _audioSource.clip = _bulletAudio;
+        _audioSource.time = 1.5f;
+        _audioSource.Play();
+
         RaycastHit hit;
         if (Physics.Raycast(shoting.transform.position, shoting.transform.forward, out hit, 100f))
         {
-            //var bulletHoleInstance = Instantiate<GameObject>(bulletHolePrefab, hit.point - shoting.transform.forward * 0.001f, Quaternion.FromToRotation(Vector3.up, hit.normal), hit.collider.transform);
+          
             if (hit.collider.tag == "Zombie" || hit.collider.tag == "Whale")
             {
-                Debug.Log("cfjioefvlek");
+                //var bulletHoleInstance = Instantiate<GameObject>(bulletHolePrefab, hit.point - shoting.transform.forward * 0.001f, Quaternion.FromToRotation(Vector3.up, hit.normal), hit.collider.transform);
                 //ヒットした敵のスクリプトを取得
                 var EnemyStatusScript = hit.collider.gameObject.GetComponent<EnemyStatus>();
                 EnemyStatusScript.SetHp(EnemyStatusScript.GetHp() * CardZombieHelseEffect);
@@ -134,7 +145,7 @@ public class Shooting : MonoBehaviour
                 EnemyStatusScript.DamageHp(shotPower * m_CardShotPowerEffect);
                 //弾に当たった時、確率でのけぞりモーションを入れる
                 ZombieSc.BulletHit();
-
+                Debug.Log(EnemyStatusScript.GetHp());
                 //敵の体力が０になった時
                 if (EnemyStatusScript.GetHp() < 0)
                 {
