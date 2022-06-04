@@ -9,10 +9,10 @@ public class Shooting : MonoBehaviour
     //メインカメラ
     [SerializeField] private Camera _cam;
     //弾のプレハブ
-    [SerializeField]private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject _bulletMuzzule;
     //ショットのマズル
-    [SerializeField] private GameObject　shoting;
+    [SerializeField] private GameObject shoting;
     //マズルフラッシュを出す位置
     [SerializeField] private GameObject flashPrefab;
     //サメが死んだときに出すプレハブ
@@ -30,8 +30,8 @@ public class Shooting : MonoBehaviour
     [SerializeField] private AudioClip _bulletAudio;
     [SerializeField] private AudioSource _audioSource;
 
-    [SerializeField]public float ReloedTime = 30;
-    [SerializeField]private float shotInterval;
+    [SerializeField] public float ReloedTime = 30;
+    [SerializeField] private float shotInterval;
     [SerializeField] private float ReloadInterval;
     [SerializeField] private GameObject bulletHolePrefab;
     //[SerializeField] private 
@@ -56,6 +56,12 @@ public class Shooting : MonoBehaviour
 
     private bool ReloadBool = false;
     private int DestroyCount = 0;
+
+
+    [SerializeField] private float x;
+    [SerializeField] private float y;
+    [SerializeField] private float z;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -66,7 +72,8 @@ public class Shooting : MonoBehaviour
     void Update()
     {
         ShotingGun();
-        
+
+
     }
 
     private void ShotingGun()
@@ -76,10 +83,10 @@ public class Shooting : MonoBehaviour
 
         if (ReloadInterval < ReloedTime)
         {
-           
+
             if (Input.GetKey(KeyCode.Mouse0) && shotInterval < shotTime)
             {
-               
+
 
                 if (shotCount > 0)
                 {
@@ -99,7 +106,7 @@ public class Shooting : MonoBehaviour
 
                     //銃を撃つ処理
                     Shot();
-                  
+
                 }
                 shotTime = 0;
             }
@@ -123,7 +130,7 @@ public class Shooting : MonoBehaviour
        yield return new WaitForSeconds(2);
     }*/
 
-    private void Shot() 
+    private void Shot()
     {
         _audioSource.clip = _bulletAudio;
         _audioSource.time = 1.5f;
@@ -133,6 +140,8 @@ public class Shooting : MonoBehaviour
         if (Physics.Raycast(shoting.transform.position, shoting.transform.forward, out hit, 100f))
         {
           
+            //Debug.DrawLine()
+
             if (hit.collider.tag == "Zombie" || hit.collider.tag == "Whale")
             {
                 //var bulletHoleInstance = Instantiate<GameObject>(bulletHolePrefab, hit.point - shoting.transform.forward * 0.001f, Quaternion.FromToRotation(Vector3.up, hit.normal), hit.collider.transform);
@@ -174,7 +183,7 @@ public class Shooting : MonoBehaviour
 
     }
 
-    private void Reload() 
+    private void Reload()
     {
         if (ReloadBool && MaxBulletNum != 0)
         {
@@ -195,8 +204,18 @@ public class Shooting : MonoBehaviour
 
     }
 
-    private void Dead() 
-    { 
+    private void Dead()
+    {
+
+    }
+
+    private void RayTest()
+    {
+
+    }
+
+    private void OnDrawGizmos()
+    {
 
     }
 
