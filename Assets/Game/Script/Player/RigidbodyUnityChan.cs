@@ -7,7 +7,7 @@ using TMPro;
 public class RigidbodyUnityChan : MonoBehaviour
 {
     public UnityChanStatus allyStatus;
-    [SerializeField]private ReloScript reloCs;
+    [SerializeField] private ReloScript reloCs;
     [SerializeField] private EnemySpawnScript _enemySpawnScript;
 
     float x, z;
@@ -16,40 +16,54 @@ public class RigidbodyUnityChan : MonoBehaviour
     private float Sumx, Sumy, CamNumx, CamNumy;
     private bool Cambool = false;
 
+    [Header("GameOverUnityPrefab")]
+    [SerializeField] private GameObject _gameOverUnityPrefab;
+
     [Header("カメラオブジェクト")]
     [SerializeField] private GameObject cam;
     [SerializeField] private GameObject subCam;
 
     [SerializeField] private float wave;
     [SerializeField] private float jumpPower;
-    //グレネードのダメージ
-    [Header("グレネードのダメージ")]
-    [SerializeField]private float _grenadDamege;
-    //[SerializeField] private Vector3 CameraVector3;
+
     [Header("ガンのオブジェクト")]
     [SerializeField] private GameObject mesh_rot, GunModel, CameraGunModel;
+
     [Header("銃痕")]
     [SerializeField] private GameObject bulletHolePrefab;
+
     [Header("弾のスクリプト")]
     [SerializeField] private Shooting shotCs;
-    [Header("敵からダメージを受け付ける感覚の長さ")]
-    [SerializeField]private  float AttackDamegeWaitTime;
-    [SerializeField]private Slider slider;
-    //ノックバックするスピード
-    [Header("ノックバックするスピード")]
-    [SerializeField]private float m_KnockBackSpeed;
 
-    //お金を表示するテキスト
+    [Header("敵からダメージを受け付ける感覚の長さ")]
+    [SerializeField] private float AttackDamegeWaitTime;
+    [SerializeField] private Slider slider;
+
+    [Header("ノックバックするスピード")]
+    [SerializeField] private float m_KnockBackSpeed;
+
+
     [Header("お金を表示するテキスト")]
     [SerializeField] private TextMeshProUGUI MoneyTextNum;
-    //グレネードのスクリプト
+
+
+    [Header("グレネードのダメージ")]
+    [SerializeField] private float _grenadDamege;
+
     [Header("グレネードのスクリプト")]
     [SerializeField] private DrawArc _grenadCs;
     [SerializeField] private ShootBullet _shootBulletCs;
+
     [Header("グレネードを持っている数")]
     public int GrenadeNum = 0;
+
     [Header("グレネードの数を表示するテキスト")]
     [SerializeField] private TextMeshProUGUI _granedNumText;
+
+    [Header("リザルトのキャンバス")]
+    [SerializeField] private GameObject _resultCanvas;
+
+    [SerializeField] private ResultManager _resultCs;
 
 
     Quaternion cameraRot, characterRot;
@@ -60,14 +74,16 @@ public class RigidbodyUnityChan : MonoBehaviour
     private Animator animator;
     private Rigidbody rb;
     private MeshRenderer GunModelMesh;
+
     public bool EnemyAttack = false;
     private bool jumpNow = false;
     private bool isDamege = false;
+    private bool isDead = false;
 
-   
+
     private float CountTime;
     private float m_WhaleAfterTime;
-    private float CurrentHp; 
+    private float CurrentHp;
 
     [SerializeField] private GameObject subCamera;//サブカメラ格納用
     private Camera subCameraSetActive;
@@ -88,13 +104,18 @@ public class RigidbodyUnityChan : MonoBehaviour
         animator = GetComponent<Animator>();
         subCameraSetActive = subCamera.GetComponent<Camera>();
         rb = GetComponent<Rigidbody>();
+        _resultCs = GameObject.Find("ResultManager").GetComponent<ResultManager>();
+        
+
+        CurrentHp = allyStatus.GetHp();
+        slider.value = (float)CurrentHp / (float)allyStatus.GetMaxHp();
 
         _granedNumText.text = GrenadeNum.ToString();
     }
 
     void Update()
     {
-        
+
         float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
         float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
         #region
@@ -102,36 +123,36 @@ public class RigidbodyUnityChan : MonoBehaviour
         {
             //リコイルパーターンを作る
             Sumx = Random.Range(-0.3f, 0.3f);
-            Sumy = Random.Range(-0.3f, 0);  
+            Sumy = Random.Range(-0.3f, 0);
         }
         if (!Input.GetMouseButton(0))
         {
             Sumx = 0;
             Sumy = 0;
         }
-        
-       if (!Input.GetMouseButton(1) && !Cambool)
-       {
-           //CamNumx = 0;
-           //CamNumy = 0;
-           CamNumx = subCam.transform.localEulerAngles.x;
-           CamNumy = subCam.transform.localEulerAngles.y;
-           Cambool = true;
-       }
-       else if(Input.GetMouseButton(1) && Cambool)
-       {
-           //CamNumx = 0;
-           //CamNumy = 0;
-           CamNumx = cam.transform.localEulerAngles.x;
-           CamNumy = cam.transform.localEulerAngles.y;
-           Cambool = false;
-       }
-      
+
+        if (!Input.GetMouseButton(1) && !Cambool)
+        {
+            //CamNumx = 0;
+            //CamNumy = 0;
+            CamNumx = subCam.transform.localEulerAngles.x;
+            CamNumy = subCam.transform.localEulerAngles.y;
+            Cambool = true;
+        }
+        else if (Input.GetMouseButton(1) && Cambool)
+        {
+            //CamNumx = 0;
+            //CamNumy = 0;
+            CamNumx = cam.transform.localEulerAngles.x;
+            CamNumy = cam.transform.localEulerAngles.y;
+            Cambool = false;
+        }
+
         #endregion
         //カメラの回転
         if (!Input.GetMouseButton(1))
         {
-            
+
             cameraRot *= Quaternion.Euler(-yRot, 0, 0);
             characterRot *= Quaternion.Euler(0, xRot, 0);
             //cam.transform.rotation = subCamera.transform.rotation;
@@ -160,10 +181,10 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
 
         transform.localRotation = characterRot;
-        
+
 
         UpdateCursorLock();
-        
+
         //キャラクターの移動。ダメージを受けているときは操作できない
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !isDamege)
         {
@@ -205,7 +226,16 @@ public class RigidbodyUnityChan : MonoBehaviour
         _granedNumText.text = GrenadeNum.ToString();
 
         //お金を表示させる
-        MoneyTextNum.text =  allyStatus.GetMoney().ToString();
+        MoneyTextNum.text = allyStatus.GetMoney().ToString();
+
+        if (allyStatus.GetHp() <= 0)
+        {
+            _resultCanvas.SetActive(true); 
+            _resultCs.enabled = true;
+            var a = Instantiate(_gameOverUnityPrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+            
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void FixedUpdate()
@@ -228,7 +258,7 @@ public class RigidbodyUnityChan : MonoBehaviour
 
         transform.position += cam.transform.forward * z + cam.transform.right * x;
     }
-   
+
     //画面のカーソルをロックする
     public void UpdateCursorLock()
     {
@@ -236,7 +266,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         //ショップなどに移った時カーソルのロックを外す
         if (_enemySpawnScript.raundType == EnemySpawnScript.RaundType.StandardRaund)
         {
-           Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else if (_enemySpawnScript.raundType != EnemySpawnScript.RaundType.StandardRaund)
         {
@@ -272,11 +302,11 @@ public class RigidbodyUnityChan : MonoBehaviour
                 jumpNow = false;
                 animator.SetBool("jump Bool", false);
             }
-            
+
         }
     }
 
-　　/// <summary>
+    /// <summary>
     ///ジャンプ処理 
     /// </summary>
     void Jump()
@@ -314,12 +344,12 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
 
         //サメの攻撃後の水たまりを踏んだ時
-        if (other.gameObject.CompareTag("WhaleAttackAfter")) 
+        if (other.gameObject.CompareTag("WhaleAttackAfter"))
         {
             m_WhaleAfterTime += Time.deltaTime;
             //画面を赤くする処理
             //
-            if (m_WhaleAfterTime > 2) 
+            if (m_WhaleAfterTime > 2)
             {
                 Debug.Log(allyStatus.GetHp() - 210f);
                 allyStatus.SetHp(allyStatus.GetHp() - 510f);
@@ -331,7 +361,7 @@ public class RigidbodyUnityChan : MonoBehaviour
     }
 
     /// <summary> グレネードを投げる処理 </summary>
-    private void GrenadStart() 
+    private void GrenadStart()
     {
 
         //グレネードを構える
@@ -356,7 +386,6 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        //Debug.Log("effknewfvbkevnlews");
 
         if (other.layer == 6)
         {

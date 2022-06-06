@@ -197,7 +197,6 @@ public class ZombieScript : MonoBehaviour
 
                 Destroy(this.gameObject, 5f);
                 _enemySpawnScriptCs.EnemyDestroyCount++;
-                Debug.Log("aff");
 
             }
         }

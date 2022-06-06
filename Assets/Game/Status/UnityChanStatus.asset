@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: UnityChanStatus
   m_EditorClassIdentifier: 
   MaxHp: 1000
-  hp: -59988.95
+  hp: 980
   power: 0
   agility: 0
-  money: 1680
+  money: 4989400

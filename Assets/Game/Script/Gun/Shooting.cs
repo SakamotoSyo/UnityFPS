@@ -154,7 +154,6 @@ public class Shooting : MonoBehaviour
                 EnemyStatusScript.DamageHp(shotPower * m_CardShotPowerEffect);
                 //弾に当たった時、確率でのけぞりモーションを入れる
                 ZombieSc.BulletHit();
-                Debug.Log(EnemyStatusScript.GetHp());
                 //敵の体力が０になった時
                 if (EnemyStatusScript.GetHp() < 0)
                 {

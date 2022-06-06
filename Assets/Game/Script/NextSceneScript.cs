@@ -1,17 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Test : MonoBehaviour
+public class NextSceneScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    int b = 0;
     void Start()
     {
-        aaa(b);
-        aaa(b);
-        aaa(b);
-        Debug.Log(b);
+        
     }
 
     // Update is called once per frame
@@ -20,8 +17,9 @@ public class Test : MonoBehaviour
         
     }
 
-    void aaa(int b)
+    public void NextScene() 
     {
-        ++b; 
+        Debug.Log("yobareya");
+        SceneManager.LoadScene("MainScene");
     }
 }

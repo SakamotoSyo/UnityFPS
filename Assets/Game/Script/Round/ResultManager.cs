@@ -6,19 +6,22 @@ using UnityEngine.Playables;
 
 public class ResultManager : MonoBehaviour
 {
+    [Header("テキストのゲームオブジェクト")]
     [SerializeField] private TextMeshProUGUI _zonbieNumText;
     [SerializeField] private TextMeshProUGUI _whaleNumText;
     [SerializeField] private TextMeshProUGUI _moneyScoreText;
     [SerializeField] private TextMeshProUGUI _scoreResult;
 
-    //リザルトテキストのタイムライン
+    [Header("リザルトテキストのタイムライン")]
     [SerializeField] private PlayableDirector[] _textPlayableDirector;
 
-    //コルーチンの時間間隔
+    [Header("コルーチンの時間間隔")]
+    [SerializeField] private int _coroutineTime;
 
-    public float ZonbieNum = 0;
-    public float WhaleNum = 0;
-    public float MoneyNum = 0;
+    [Header("スコア")]
+    [SerializeField]public float ZonbieNum = 0;
+    [SerializeField] public float WhaleNum = 0;
+    [SerializeField] public float MoneyNum = 0;
 
     private float TotalScore;
 
@@ -39,41 +42,43 @@ public class ResultManager : MonoBehaviour
 
         _zonbieNumText.text = ZonbieNum.ToString();
         _textPlayableDirector[0].Play();
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(_coroutineTime);
 
         _whaleNumText.text = WhaleNum.ToString();
         _textPlayableDirector[1].Play();
-        yield return new WaitForSeconds (3);
+        yield return new WaitForSeconds (_coroutineTime);
         
         _moneyScoreText.text = MoneyNum.ToString();
         _textPlayableDirector[2].Play();
-        yield return new WaitForSeconds (3);
+        yield return new WaitForSeconds (_coroutineTime);
 
-        TotalScore = ZonbieNum + (WhaleNum * 10) * (MoneyNum * 0.2f);
+        TotalScore = ZonbieNum + (WhaleNum * 10) + (MoneyNum * 0.2f);
 
         _textPlayableDirector[3].Play();
-        if (TotalScore < 100)
+
+        if (TotalScore < 2000)
         {
+            Debug.Log("asdawf");
             _scoreResult.text = "C";
         }
-        else if (TotalScore < 300)
+        else if (TotalScore < 4000)
         {
             _scoreResult.text = "B";
         }
-        else if (TotalScore < 500)
+        else if (TotalScore < 6000)
         {
             _scoreResult.text = "A";
         }
-        else if (TotalScore < 1000)
+        else if (TotalScore < 10000)
         {
             _scoreResult.text = "S";
         }
-        else if (TotalScore < 2000) 
+        else if (TotalScore < 20000) 
         {
             _scoreResult.text = "SS";
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(_coroutineTime);
 
         //Reset処理
 
