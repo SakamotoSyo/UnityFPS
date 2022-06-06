@@ -63,6 +63,9 @@ public class RigidbodyUnityChan : MonoBehaviour
     [Header("リザルトのキャンバス")]
     [SerializeField] private GameObject _resultCanvas;
 
+    [Header("クロスヘアを表示するオブジェクト")]
+    [SerializeField] private GameObject CrossHair;
+
     [SerializeField] private ResultManager _resultCs;
 
 
@@ -116,73 +119,10 @@ public class RigidbodyUnityChan : MonoBehaviour
     void Update()
     {
 
-        float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
-        float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
-        #region
-        if (Input.GetMouseButton(0) && shotCs.shotCount > 0 && !reloCs.ReloadBool)
-        {
-            //リコイルパーターンを作る
-            Sumx = Random.Range(-0.3f, 0.3f);
-            Sumy = Random.Range(-0.3f, 0);
-        }
-        if (!Input.GetMouseButton(0))
-        {
-            Sumx = 0;
-            Sumy = 0;
-        }
+        //カメラに関する処理
+        CameraController();
 
-        if (!Input.GetMouseButton(1) && !Cambool)
-        {
-            //CamNumx = 0;
-            //CamNumy = 0;
-            CamNumx = subCam.transform.localEulerAngles.x;
-            CamNumy = subCam.transform.localEulerAngles.y;
-            Cambool = true;
-        }
-        else if (Input.GetMouseButton(1) && Cambool)
-        {
-            //CamNumx = 0;
-            //CamNumy = 0;
-            CamNumx = cam.transform.localEulerAngles.x;
-            CamNumy = cam.transform.localEulerAngles.y;
-            Cambool = false;
-        }
-
-        #endregion
-        //カメラの回転
-        if (!Input.GetMouseButton(1))
-        {
-
-            cameraRot *= Quaternion.Euler(-yRot, 0, 0);
-            characterRot *= Quaternion.Euler(0, xRot, 0);
-            //cam.transform.rotation = subCamera.transform.rotation;
-        }
-        else
-        {
-
-            subCameraRot *= Quaternion.Euler(-yRot + Sumy, 0, 0);
-            characterRot *= Quaternion.Euler(0, xRot + Sumx + CamNumx, 0);
-            //subCam.transform.rotation = cam.transform.rotation;
-        }
-
-
-
-
-        //Updateの中で作成した関数を呼ぶ
-        if (!Input.GetMouseButton(1))
-        {
-            cameraRot = ClampRotation(cameraRot);
-            cam.transform.localRotation = cameraRot;
-        }
-        else
-        {
-            subCameraRot = ClampRotation(subCameraRot);
-            subCamera.transform.localRotation = subCameraRot;
-        }
-
-        transform.localRotation = characterRot;
-
-
+        //画面のカーソルをロックする
         UpdateCursorLock();
 
         //キャラクターの移動。ダメージを受けているときは操作できない
@@ -199,29 +139,11 @@ public class RigidbodyUnityChan : MonoBehaviour
         GrenadStart();
 
         //ADSしたときの処理
-        if (Input.GetMouseButton(1) && !isDamege)
-        {
-            mesh_rot.SetActive(false);
-            GunModel.SetActive(false);
-            CameraGunModel.SetActive(true);
-            animator.SetBool("Bool", true);
-            subCamera.SetActive(true);
-            subCameraSetActive.enabled = true;
-
-        }
-        else
-        {
-            mesh_rot.SetActive(true);
-            GunModel.SetActive(true);
-            CameraGunModel.SetActive(false);
-            animator.SetBool("Bool", false);
-            subCameraSetActive.enabled = false;
-        }
-
+        ADSBool();
+       
         Jump();
 
-        CamNumx = 0;
-        CamNumy = 0;
+       
         animator.SetBool("Damage", isDamege);
         _granedNumText.text = GrenadeNum.ToString();
 
@@ -394,6 +316,102 @@ public class RigidbodyUnityChan : MonoBehaviour
             CurrentHp = allyStatus.GetHp();
             Debug.Log("ddd");
         }
+    }
+
+    /// <summary> ADSしたときの処理 </summary>
+    private void ADSBool() 
+    {
+        if (Input.GetMouseButton(1) && !isDamege)
+        {
+            mesh_rot.SetActive(false);
+            GunModel.SetActive(false);
+            CameraGunModel.SetActive(true);
+            animator.SetBool("Bool", true);
+            subCamera.SetActive(true);
+            subCameraSetActive.enabled = true;
+            CrossHair.SetActive(true);
+
+        }
+        else
+        {
+            mesh_rot.SetActive(true);
+            GunModel.SetActive(true);
+            CameraGunModel.SetActive(false);
+            animator.SetBool("Bool", false);
+            subCameraSetActive.enabled = false;
+            CrossHair.SetActive(false);
+        }
+
+    }
+
+　　/// <summary>カメラに関する処理</summary>
+    private void CameraController() 
+    {
+        float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
+        float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
+        #region
+        if (Input.GetMouseButton(0) && shotCs.shotCount > 0 && !reloCs.ReloadBool)
+        {
+            //リコイルパーターンを作る
+            Sumx = Random.Range(-0.3f, 0.3f);
+            Sumy = Random.Range(-0.3f, 0);
+        }
+        if (!Input.GetMouseButton(0))
+        {
+            Sumx = 0;
+            Sumy = 0;
+        }
+
+        if (!Input.GetMouseButton(1) && !Cambool)
+        {
+            //CamNumx = 0;
+            //CamNumy = 0;
+            CamNumx = subCam.transform.localEulerAngles.x;
+            CamNumy = subCam.transform.localEulerAngles.y;
+            Cambool = true;
+        }
+        else if (Input.GetMouseButton(1) && Cambool)
+        {
+            //CamNumx = 0;
+            //CamNumy = 0;
+            CamNumx = cam.transform.localEulerAngles.x;
+            CamNumy = cam.transform.localEulerAngles.y;
+            Cambool = false;
+        }
+
+        #endregion
+        //カメラの回転
+        if (!Input.GetMouseButton(1))
+        {
+
+            cameraRot *= Quaternion.Euler(-yRot, 0, 0);
+            characterRot *= Quaternion.Euler(0, xRot, 0);
+            //cam.transform.rotation = subCamera.transform.rotation;
+        }
+        else
+        {
+
+            subCameraRot *= Quaternion.Euler(-yRot + Sumy, 0, 0);
+            characterRot *= Quaternion.Euler(0, xRot + Sumx + CamNumx, 0);
+            //subCam.transform.rotation = cam.transform.rotation;
+        }
+
+        //Updateの中で作成した関数を呼ぶ
+        if (!Input.GetMouseButton(1))
+        {
+            cameraRot = ClampRotation(cameraRot);
+            cam.transform.localRotation = cameraRot;
+        }
+        else
+        {
+            subCameraRot = ClampRotation(subCameraRot);
+            subCamera.transform.localRotation = subCameraRot;
+        }
+
+        transform.localRotation = characterRot;
+
+        CamNumx = 0;
+        CamNumy = 0;
     }
 
 
