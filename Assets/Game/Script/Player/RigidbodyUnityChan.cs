@@ -68,6 +68,13 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     [SerializeField] private ResultManager _resultCs;
 
+    [Header("プレイヤーのオーディオソース")]
+    [SerializeField] private AudioSource _audioSource;
+
+    [Header("プレイヤーのボイス")]
+    [SerializeField] private AudioClip[] _audioClip;
+
+
 
     Quaternion cameraRot, characterRot;
     Quaternion subCameraRot;
@@ -196,6 +203,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
     }
 
+
     //角度制限関数の作成
     public Quaternion ClampRotation(Quaternion q)
     {
@@ -215,6 +223,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         return q;
     }
 
+
     private void OnCollisionEnter(Collision other)
     {
         if (jumpNow == true)
@@ -228,6 +237,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
     }
 
+
     /// <summary>
     ///ジャンプ処理 
     /// </summary>
@@ -237,6 +247,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         if (jumpNow == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            _audioSource.PlayOneShot(_audioClip[0]);
             rb.AddForce(transform.up * jumpPower, ForceMode.Impulse);
             animator.SetBool("jump Bool", true);
             jumpNow = true;
@@ -244,6 +255,7 @@ public class RigidbodyUnityChan : MonoBehaviour
 
 
     }
+
 
     private void OnTriggerStay(Collider other)
     {
@@ -254,6 +266,7 @@ public class RigidbodyUnityChan : MonoBehaviour
             var EnemyStatusScript = other.gameObject.GetComponent<EnemyStatus>();
             //ダメージを受けたとき
             isDamege = true;
+            _audioSource.PlayOneShot(_audioClip[1]);
             //ノックバック処理
             rb.AddForce(-transform.forward * m_KnockBackSpeed, ForceMode.VelocityChange);
             allyStatus.DamageHp(EnemyStatusScript.GetPower());
@@ -282,6 +295,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
     }
 
+
     /// <summary> グレネードを投げる処理 </summary>
     private void GrenadStart()
     {
@@ -306,6 +320,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
     }
 
+
     private void OnParticleCollision(GameObject other)
     {
 
@@ -317,6 +332,7 @@ public class RigidbodyUnityChan : MonoBehaviour
             Debug.Log("ddd");
         }
     }
+
 
     /// <summary> ADSしたときの処理 </summary>
     private void ADSBool() 
@@ -343,6 +359,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         }
 
     }
+
 
 　　/// <summary>カメラに関する処理</summary>
     private void CameraController() 
@@ -413,6 +430,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         CamNumx = 0;
         CamNumy = 0;
     }
+
 
 
     private void DamegeFalse() => isDamege = false;
