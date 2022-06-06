@@ -58,11 +58,15 @@ public class ZombieScript : MonoBehaviour
             navMeshAgent.SetDestination(player.transform.position);
         }
         anim.SetFloat("Speed", navMeshAgent.desiredVelocity.magnitude);
-        anim.SetBool("Damege", isDamage);
         anim.SetBool("Attack", isAttack);
-        if (gameObject.tag == "Whale") 
+
+        if (gameObject.tag == "Whale")
         {
             anim.SetBool("TailAttack", m_TailAttack);
+        }
+        else 
+        {
+            anim.SetBool("Damege", isDamage);
         }
         
 
