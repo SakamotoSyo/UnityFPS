@@ -56,7 +56,7 @@ public class EnemySpawnScript : MonoBehaviour
    
 
     //ラウンド数
-    private float WaveCount = 0;
+    private float WaveCount = 1;
     //Spawnするまでの時間
     [SerializeField]private float SpawnTime;
     //SpawnTime計測用
@@ -84,6 +84,20 @@ public class EnemySpawnScript : MonoBehaviour
     private int totalEnemy;
     //敵がどれだけ倒されたか
     public int EnemyDestroyCount;
+
+    [Header("ラウンドのText")]
+    [SerializeField] private PlayableDirector _roundTextTL;
+
+    [Header("プレイヤーのAudioSource")]
+    [SerializeField] private AudioSource _playerAudio;
+    [Header("プレイヤーのボイス")]
+    [SerializeField] private AudioClip _playerClip;
+
+    [Header("TextのAudioSource")]
+    [SerializeField] private AudioSource _textAudio;
+
+    [Header("テキストの効果音")]
+    [SerializeField] private AudioClip _textClip;
 
     [Header("スポーン管理")]
     //ゾンビの最低スポーン数
@@ -274,7 +288,9 @@ public class EnemySpawnScript : MonoBehaviour
                 BreakWaitTime = 25;
                 BreakBool = false;
                 OnBreak.SetActive(false);
-
+                _roundTextTL.Play();
+                _textAudio.Play();
+                _playerAudio.PlayOneShot(_playerClip);
 
             }
         }
