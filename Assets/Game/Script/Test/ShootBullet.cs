@@ -20,6 +20,7 @@ public class ShootBullet : MonoBehaviour
     /// ’e‚ğ¶¬‚·‚éˆÊ’uî•ñ
     /// </summary>
     private Vector3 instantiatePosition;
+
     /// <summary>
     /// ’e‚Ì¶¬À•W(“Ç‚İæ‚èê—p)
     /// </summary>
@@ -65,8 +66,7 @@ public class ShootBullet : MonoBehaviour
             Rigidbody rid = obj.GetComponent<Rigidbody>();
             rid.AddForce(shootVelocity * rid.mass, ForceMode.Impulse);
 
-            // 5•bŒã‚ÉÁ‚¦‚é
-            //Destroy(obj, 5.0F);
         }
+
     }
 }
