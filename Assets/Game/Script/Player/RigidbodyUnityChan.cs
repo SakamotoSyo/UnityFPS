@@ -86,7 +86,6 @@ public class RigidbodyUnityChan : MonoBehaviour
     public bool EnemyAttack = false;
     private bool jumpNow = false;
     private bool isDamege = false;
-    private bool isDead = false;
 
 
     private float CountTime;
@@ -95,8 +94,6 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     [SerializeField] private GameObject subCamera;//サブカメラ格納用
     private Camera subCameraSetActive;
-
-    bool cursorLock = true;
 
     //変数の宣言(角度の制限用)
     float minX = -80f, maxX = 80f;
@@ -130,15 +127,9 @@ public class RigidbodyUnityChan : MonoBehaviour
         //画面のカーソルをロックする
         UpdateCursorLock();
 
-        //キャラクターの移動。ダメージを受けているときは操作できない
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !isDamege)
-        {
-            animator.SetBool("RunBool", true);
-        }
-        else
-        {
-            animator.SetBool("RunBool", false);
-        }
+        //キャラクターを動かす
+        CharacterMove();
+
 
         //グレネードを投げる処理
         GrenadStart();
@@ -167,6 +158,10 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     private void FixedUpdate()
     {
+    }
+
+    private void CharacterMove() 
+    {
         x = 0;
         z = 0;
         //プレイヤーの操作。ダメージを受けているときは操作できない
@@ -184,6 +179,16 @@ public class RigidbodyUnityChan : MonoBehaviour
         //transform.position += new Vector3(x,0,z);
 
         transform.position += cam.transform.forward * z + cam.transform.right * x;
+
+        //キャラクターの移動。ダメージを受けているときは操作できない
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !isDamege)
+        {
+            animator.SetBool("RunBool", true);
+        }
+        else
+        {
+            animator.SetBool("RunBool", false);
+        }
     }
 
     //画面のカーソルをロックする
@@ -316,6 +321,7 @@ public class RigidbodyUnityChan : MonoBehaviour
             _grenadCs.DrawArcBool = false;
 
         }
+        
     }
 
 

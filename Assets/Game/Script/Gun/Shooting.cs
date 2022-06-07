@@ -149,7 +149,7 @@ public class Shooting : MonoBehaviour
                 var EnemyStatusScript = hit.collider.gameObject.GetComponent<EnemyStatus>();
                 EnemyStatusScript.SetHp(EnemyStatusScript.GetHp() * CardZombieHelseEffect);
                 var ZombieSc = hit.collider.gameObject.GetComponent<ZombieScript>();
-
+              
                 //弾が当たった時にゾンビにダメージを与える（カードの効果で威力が変わる）
                 EnemyStatusScript.DamageHp(shotPower * m_CardShotPowerEffect);
                 //弾に当たった時、確率でのけぞりモーションを入れる
