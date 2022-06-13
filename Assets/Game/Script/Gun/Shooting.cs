@@ -25,6 +25,8 @@ public class Shooting : MonoBehaviour
     public int MaxBulletNum = 4000;
     //マネーカードの効果
     public float MoneyCardEffectNum = 1;
+    //敵を倒した数
+   [HideInInspector] public int ZombieNum, WhaleNum;
 
     //オーディオ関連
     [SerializeField] private AudioClip _bulletAudio;
@@ -51,6 +53,8 @@ public class Shooting : MonoBehaviour
 
     [SerializeField] private EnemySpawnScript enemySpawnScript;
     [SerializeField] private UnityChanStatus unityStatus;
+    [Header("リザルトマネージャー")]
+    [SerializeField] private ResultManager _resultManager;
     [SerializeField] private TextMeshProUGUI BulletNum;
     [SerializeField] private TextMeshProUGUI MaxBulletNumText;
 
@@ -164,10 +168,12 @@ public class Shooting : MonoBehaviour
                     hit.collider.gameObject.SetActive(false);
                     if (hit.collider.tag == "Zombie")
                     {
+                        ZombieNum++;
                         var zombie = Instantiate(DeadZombie, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
                     }
                     else if (hit.collider.tag == "Whale")
                     {
+                        WhaleNum++;
                         var shale = Instantiate(DeadWhale, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
                     }
 
