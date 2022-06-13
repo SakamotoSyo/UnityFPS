@@ -4,13 +4,19 @@ using TMPro;
 
 public class RigidbodyUnityChan : MonoBehaviour
 {
+    public enum Weapon
+    {
+        Gun,
+        Knife
+    }
+
     public UnityChanStatus allyStatus;
     [SerializeField] private ReloScript reloCs;
     [SerializeField] private EnemySpawnScript _enemySpawnScript;
 
     float x, z;
     float speed = 0.05f;
-    private float RunSpeed = 0.1f;
+    private float RunSpeed = 0.08f;
     private float Sumx, Sumy, CamNumx, CamNumy;
     private bool Cambool = false;
 
@@ -72,6 +78,9 @@ public class RigidbodyUnityChan : MonoBehaviour
     [Header("プレイヤーのボイス")]
     [SerializeField] private AudioClip[] _audioClip;
 
+    [Header("ナイフのゲームオブジェクト")]
+    [SerializeField] private GameObject KifeGameObject;
+
 
 
     Quaternion cameraRot, characterRot;
@@ -83,9 +92,11 @@ public class RigidbodyUnityChan : MonoBehaviour
     private Rigidbody rb;
     private MeshRenderer GunModelMesh;
 
+
     public bool EnemyAttack = false;
     private bool jumpNow = false;
     private bool isDamege = false;
+    private Weapon _weaponType = Weapon.Gun;
 
 
     private float CountTime;
@@ -110,7 +121,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         subCameraSetActive = subCamera.GetComponent<Camera>();
         rb = GetComponent<Rigidbody>();
         _resultCs = GameObject.Find("ResultManager").GetComponent<ResultManager>();
-        
+
 
         CurrentHp = allyStatus.GetHp();
         slider.value = (float)CurrentHp / (float)allyStatus.GetMaxHp();
@@ -120,6 +131,11 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     void Update()
     {
+        //ナイフの処理
+       // KnifeAttack();
+
+        //武器の切り替え
+        //ChangeWeapon();
 
         //カメラに関する処理
         CameraController();
@@ -136,10 +152,10 @@ public class RigidbodyUnityChan : MonoBehaviour
 
         //ADSしたときの処理
         ADSBool();
-       
+
         Jump();
 
-       
+
         animator.SetBool("Damage", isDamege);
         _granedNumText.text = GrenadeNum.ToString();
 
@@ -148,19 +164,15 @@ public class RigidbodyUnityChan : MonoBehaviour
 
         if (allyStatus.GetHp() <= 0)
         {
-            _resultCanvas.SetActive(true); 
+            _resultCanvas.SetActive(true);
             _resultCs.enabled = true;
             var a = Instantiate(_gameOverUnityPrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
-            
+
             this.gameObject.SetActive(false);
         }
     }
 
     private void FixedUpdate()
-    {
-    }
-
-    private void CharacterMove() 
     {
         x = 0;
         z = 0;
@@ -179,6 +191,46 @@ public class RigidbodyUnityChan : MonoBehaviour
         //transform.position += new Vector3(x,0,z);
 
         transform.position += cam.transform.forward * z + cam.transform.right * x;
+    }
+
+    /// <summary>武器の切替</summary>
+    private void ChangeWeapon() 
+    {
+        //マウスホイールで武器を切り替える
+        var Mouse = Input.GetAxisRaw("Mouse ScrollWheel");
+        Debug.Log(Mouse);
+        if (Mouse != 0)  
+        {
+            if (Weapon.Gun == _weaponType)
+            {
+                _weaponType = Weapon.Knife;
+                GunModel.SetActive(false);
+                KifeGameObject.SetActive(true);
+                Debug.Log("呼ばれた");
+               
+            }
+            else if (Weapon.Knife == _weaponType) 
+            {
+                _weaponType = Weapon.Gun;
+                KifeGameObject.SetActive(false);
+                GunModel.SetActive(true);
+            }
+
+        }
+
+    }
+
+    private void KnifeAttack() 
+    {
+        if (Input.GetMouseButton(0) && Weapon.Knife == _weaponType) 
+        {
+            animator.SetBool("KnifeAttack", true);
+        }
+    }
+
+    private void CharacterMove() 
+    {
+       
 
         //キャラクターの移動。ダメージを受けているときは操作できない
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !isDamege)
@@ -196,13 +248,15 @@ public class RigidbodyUnityChan : MonoBehaviour
     {
 
         //ショップなどに移った時カーソルのロックを外す
-        if (_enemySpawnScript.raundType == EnemySpawnScript.RaundType.StandardRaund)
+        if (_enemySpawnScript.raundType == EnemySpawnScript.RaundType.StandardRaund && allyStatus.GetHp() > 0)
         {
             Cursor.lockState = CursorLockMode.Locked;
+            Debug.Log("dadad");
         }
-        else if (_enemySpawnScript.raundType != EnemySpawnScript.RaundType.StandardRaund)
+        else if (_enemySpawnScript.raundType != EnemySpawnScript.RaundType.StandardRaund || allyStatus.GetHp() <= 0)
         {
             Cursor.lockState = CursorLockMode.None;
+            Debug.Log("aaaaaaaaa");
         }
     }
 
@@ -341,7 +395,7 @@ public class RigidbodyUnityChan : MonoBehaviour
     /// <summary> ADSしたときの処理 </summary>
     private void ADSBool() 
     {
-        if (Input.GetMouseButton(1) && !isDamege)
+        if (Input.GetMouseButton(1) && !isDamege && Weapon.Gun == _weaponType)
         {
             mesh_rot.SetActive(false);
             GunModel.SetActive(false);
@@ -352,7 +406,7 @@ public class RigidbodyUnityChan : MonoBehaviour
             CrossHair.SetActive(true);
 
         }
-        else
+        else if(!Input.GetMouseButton(1) && !isDamege && Weapon.Gun == _weaponType)
         {
             mesh_rot.SetActive(true);
             GunModel.SetActive(true);
@@ -402,14 +456,14 @@ public class RigidbodyUnityChan : MonoBehaviour
 
         #endregion
         //カメラの回転
-        if (!Input.GetMouseButton(1))
+        if (!Input.GetMouseButton(1) || Weapon.Knife == _weaponType)
         {
 
             cameraRot *= Quaternion.Euler(-yRot, 0, 0);
             characterRot *= Quaternion.Euler(0, xRot, 0);
             //cam.transform.rotation = subCamera.transform.rotation;
         }
-        else
+        else if(Input.GetMouseButton(1) && Weapon.Gun == _weaponType)
         {
 
             subCameraRot *= Quaternion.Euler(-yRot + Sumy, 0, 0);
@@ -423,7 +477,7 @@ public class RigidbodyUnityChan : MonoBehaviour
             cameraRot = ClampRotation(cameraRot);
             cam.transform.localRotation = cameraRot;
         }
-        else
+        else if(Input.GetMouseButton(1) && Weapon.Gun == _weaponType)
         {
             subCameraRot = ClampRotation(subCameraRot);
             subCamera.transform.localRotation = subCameraRot;
