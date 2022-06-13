@@ -6,6 +6,8 @@ using UnityEngine.Playables;
 
 public class ResultManager : MonoBehaviour
 {
+    [Header("Playerのステータス")]
+    [SerializeField]private UnityChanStatus _allyStatus;
     [Header("テキストのゲームオブジェクト")]
     [SerializeField] private TextMeshProUGUI _zonbieNumText;
     [SerializeField] private TextMeshProUGUI _whaleNumText;
@@ -18,15 +20,15 @@ public class ResultManager : MonoBehaviour
     [Header("コルーチンの時間間隔")]
     [SerializeField] private int _coroutineTime;
 
-    [Header("スコア")]
-    [SerializeField]public float ZonbieNum = 0;
-    [SerializeField] public float WhaleNum = 0;
-    [SerializeField] public float MoneyNum = 0;
+    [Header("Shootingのスクリプト")]
+    [SerializeField] private Shooting _shootingCs; 
 
     private float TotalScore;
+    private RankingManager _rankingManager;
 
     void Start()
     {
+        _rankingManager = RankingManager.Instance;
         StartCoroutine("ScoreTotalling");
     }
 
@@ -40,19 +42,19 @@ public class ResultManager : MonoBehaviour
     private IEnumerator ScoreTotalling() 
     {
 
-        _zonbieNumText.text = ZonbieNum.ToString();
+        _zonbieNumText.text = _shootingCs.ZombieNum.ToString();
         _textPlayableDirector[0].Play();
         yield return new WaitForSeconds(_coroutineTime);
 
-        _whaleNumText.text = WhaleNum.ToString();
+        _whaleNumText.text = _shootingCs.WhaleNum.ToString();
         _textPlayableDirector[1].Play();
         yield return new WaitForSeconds (_coroutineTime);
         
-        _moneyScoreText.text = MoneyNum.ToString();
+        _moneyScoreText.text = _allyStatus.GetMoney().ToString();
         _textPlayableDirector[2].Play();
         yield return new WaitForSeconds (_coroutineTime);
 
-        TotalScore = ZonbieNum + (WhaleNum * 10) + (MoneyNum * 0.2f);
+        TotalScore = _shootingCs.ZombieNum + (_shootingCs.WhaleNum * 10) + (_allyStatus.GetMoney() * 0.2f);
 
         _textPlayableDirector[3].Play();
 
@@ -73,14 +75,18 @@ public class ResultManager : MonoBehaviour
         {
             _scoreResult.text = "S";
         }
-        else if (TotalScore < 20000) 
+        else if (TotalScore > 10000) 
         {
             _scoreResult.text = "SS";
         }
 
         yield return new WaitForSeconds(_coroutineTime);
 
-        //Reset処理
+        _rankingManager.ScoreNum = TotalScore;
+        // _rankingManager.PanelActive();
+        //_rankingManager.InputRank();
+        _rankingManager.NameDecision();
+        this.gameObject.SetActive(false);    
 
     }
 }
