@@ -19,13 +19,13 @@ public class WhaleScript : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         
-        if (other.gameObject.CompareTag("Player") && Vector3.Distance(this.gameObject.transform.position, m_UnityChan.transform.position) >= 1.5f)
+        if (other.gameObject.CompareTag("Player") && Vector3.Distance(this.gameObject.transform.position, m_UnityChan.transform.position) >= 1.5f )
         {
-            zombie.WhaleTriggerChack("Spit");
+            zombie?.WhaleTriggerChack("Spit");
         }
         else if(other.gameObject.CompareTag("Player") && Vector3.Distance(this.gameObject.transform.position, m_UnityChan.transform.position) < 1.5f)
         {
-            zombie.WhaleTriggerChack("Tail");
+            zombie?.WhaleTriggerChack("Tail");
         }
     }
 

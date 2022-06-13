@@ -43,7 +43,6 @@ public class CardShopScript : MonoBehaviour
         //カードを購入したとき
         if (allyStatus.GetMoney() >= CardShopPrice)
         {
-            Debug.Log("yobareta");
             //カードをランダムに排出する
             enemySpawnCs.CardShopOpen();
             //お金を減らす処理
@@ -59,7 +58,6 @@ public class CardShopScript : MonoBehaviour
 
     public void WeaponShopOpen() 
     {
-        Debug.Log("hiadhwodi");
         _weaponShopObject.SetActive(true);
         _cardShopObject.SetActive(false);
         
