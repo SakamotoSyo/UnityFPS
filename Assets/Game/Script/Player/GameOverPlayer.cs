@@ -19,7 +19,7 @@ public class GameOverPlayer : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            _playStatus.SetHp(1000);
+            _playStatus.SetHp(100);
             _playStatus.SetMoney(-_playStatus.GetMoney());
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
