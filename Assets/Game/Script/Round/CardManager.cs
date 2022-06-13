@@ -24,11 +24,9 @@ public class CardManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel") && _enemySpawnScript.raundType == EnemySpawnScript.RaundType.ShopCardSelect) 
         {
-            Debug.Log("uiheiknvl");
             _enemySpawnScript.raundType = EnemySpawnScript.RaundType.StandardRaund;
             _weaponShop.SetActive(false);
            
-        
         }
     }
 
