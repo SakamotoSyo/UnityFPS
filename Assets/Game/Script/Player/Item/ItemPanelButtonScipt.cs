@@ -12,7 +12,7 @@ public class ItemPanelButtonScipt : MonoBehaviour, ISelectHandler
     [SerializeField] private Shooting _shootingCs;
     [SerializeField] private UnityChanStatus _statusCs;
 
-    [SerializeField] private TextMeshProUGUI _bulletNum;
+    [SerializeField] private TextMeshProUGUI _maxBulletNumText;
     [Header("インフォメーションの画像")]
     [SerializeField] private Image _informationImageObject;
     [Header("このアイテムのイメージ画像")]
@@ -57,7 +57,8 @@ public class ItemPanelButtonScipt : MonoBehaviour, ISelectHandler
         {
             if (_statusCs.GetMoney() - _assaultAmoPrice > 0) 
             {
-                _shootingCs.shotCount += 30;
+                _shootingCs.MaxBulletNum += 30;
+                _maxBulletNumText.text = _shootingCs.MaxBulletNum.ToString();   
                 _statusCs.SetMoney(-_assaultAmoPrice);
             }
             
