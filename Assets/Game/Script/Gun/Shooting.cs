@@ -19,6 +19,10 @@ public class Shooting : MonoBehaviour
     [SerializeField] private GameObject DeadWhale;
     //弾のスピード
     [SerializeField] private float shotSpeed;
+    [Header("ヘッドショットの倍率")]
+    [SerializeField] private float _HeadPoint;
+    [Header("ヘッドショットのパーティクル")]
+    [SerializeField] private ParticleSystem _headShotParticle;
     //弾の数
     public int shotCount = 30;
     //最大の弾の数
@@ -100,7 +104,6 @@ public class Shooting : MonoBehaviour
 
                     Vector3 bulletPosition = shoting.transform.position;
                     GameObject bullet = (GameObject)Instantiate(bulletPrefab, bulletPosition, _bulletMuzzule.transform.rotation);
-                    //this.gameObject.transform.rotation = Quaternion.AngleAxis(-1.0f, this.gameObject.transform.right) * this.gameObject.transform.rotation;
                     muzzuleFlashParticle.Play();
                     _cam.transform.rotation = Quaternion.AngleAxis(-1.0f, _cam.transform.right) * _cam.transform.rotation;
                     Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
@@ -143,19 +146,27 @@ public class Shooting : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(shoting.transform.position, shoting.transform.forward, out hit, 100f))
         {
-          
+
             //Debug.DrawLine()
 
-            if (hit.collider.tag == "Zombie" || hit.collider.tag == "Whale")
+            if (hit.collider.tag == "Zombie" || hit.collider.tag == "Whale" || hit.collider.tag == "Haed")
             {
                 //var bulletHoleInstance = Instantiate<GameObject>(bulletHolePrefab, hit.point - shoting.transform.forward * 0.001f, Quaternion.FromToRotation(Vector3.up, hit.normal), hit.collider.transform);
+
                 //ヒットした敵のスクリプトを取得
                 var EnemyStatusScript = hit.collider.gameObject.GetComponent<EnemyStatus>();
                 EnemyStatusScript.SetHp(EnemyStatusScript.GetHp() * CardZombieHelseEffect);
                 var ZombieSc = hit.collider.gameObject.GetComponent<ZombieScript>();
-              
+
                 //弾が当たった時にゾンビにダメージを与える（カードの効果で威力が変わる）
-                EnemyStatusScript.DamageHp(shotPower * m_CardShotPowerEffect);
+                if (hit.collider.tag == "Head")
+                {
+                    EnemyStatusScript.DamageHp(shotPower * m_CardShotPowerEffect * _HeadPoint);
+                }
+                else 
+                {
+                    EnemyStatusScript.DamageHp(shotPower * m_CardShotPowerEffect);
+                }
                 //弾に当たった時、確率でのけぞりモーションを入れる
                 ZombieSc.BulletHit();
                 //敵の体力が０になった時
