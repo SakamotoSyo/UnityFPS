@@ -11,11 +11,11 @@ using UnityEngine;
 
 public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private T _instance;
+    private static T _instance;
 
     //カプセル化
-    public T Instance => _instance;
-                     
+    public static T Instance => _instance;
+
     //チーム制作の時はこう書いたほうがいい
     //public static T Instance 
     //{
@@ -36,7 +36,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     //    }
     //}
 
-    protected virtual void Awake() 
+    protected virtual void Awake()
     {
         OnAwake();
         ChackIns();
@@ -46,7 +46,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     //継承先でAwakeが必要な場合はこれを呼ぶ
     protected virtual void OnAwake() { }
 
-    protected void ChackIns() 
+    protected void ChackIns()
     {
         if (_instance == null)
         {
@@ -57,9 +57,10 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         {
             return;
         }
-        else if (Instance != this) 
+        else if (Instance != this)
         {
             //すでにあった時は何もせずに消える
+            Destroy(this);
         }
     }
 
