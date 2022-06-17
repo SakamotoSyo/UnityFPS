@@ -94,8 +94,9 @@ public class RigidbodyUnityChan : MonoBehaviour
 
 
     public bool EnemyAttack = false;
-    private bool jumpNow = false;
-    private bool isDamege = false;
+    private bool _jumpNow = false;
+    private bool _isDamege = false;
+    public bool IsGrenadeThrow = false;
     private Weapon _weaponType = Weapon.Gun;
 
 
@@ -156,7 +157,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         Jump();
 
 
-        animator.SetBool("Damage", isDamege);
+        animator.SetBool("Damage", _isDamege);
         _granedNumText.text = GrenadeNum.ToString();
 
         //お金を表示させる
@@ -177,7 +178,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         x = 0;
         z = 0;
         //プレイヤーの操作。ダメージを受けているときは操作できない
-        if (!Input.GetKey(KeyCode.LeftShift) && !isDamege)
+        if (!Input.GetKey(KeyCode.LeftShift) && !_isDamege)
         {
             x = Input.GetAxisRaw("Horizontal") * speed;
             z = Input.GetAxisRaw("Vertical") * speed;
@@ -233,7 +234,7 @@ public class RigidbodyUnityChan : MonoBehaviour
        
 
         //キャラクターの移動。ダメージを受けているときは操作できない
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !isDamege)
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !_isDamege)
         {
             animator.SetBool("RunBool", true);
         }
@@ -251,12 +252,10 @@ public class RigidbodyUnityChan : MonoBehaviour
         if (_enemySpawnScript.raundType == EnemySpawnScript.RaundType.StandardRaund && allyStatus.GetHp() > 0)
         {
             Cursor.lockState = CursorLockMode.Locked;
-            Debug.Log("dadad");
         }
         else if (_enemySpawnScript.raundType != EnemySpawnScript.RaundType.StandardRaund || allyStatus.GetHp() <= 0)
         {
             Cursor.lockState = CursorLockMode.None;
-            Debug.Log("aaaaaaaaa");
         }
     }
 
@@ -283,11 +282,11 @@ public class RigidbodyUnityChan : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (jumpNow == true)
+        if (_jumpNow == true)
         {
             if (other.gameObject.CompareTag("Ground"))
             {
-                jumpNow = false;
+                _jumpNow = false;
                 animator.SetBool("jump Bool", false);
             }
 
@@ -301,13 +300,13 @@ public class RigidbodyUnityChan : MonoBehaviour
     void Jump()
     {
 
-        if (jumpNow == true) return;
+        if (_jumpNow == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _audioSource.PlayOneShot(_audioClip[0]);
             rb.AddForce(transform.up * jumpPower, ForceMode.Impulse);
             animator.SetBool("jump Bool", true);
-            jumpNow = true;
+            _jumpNow = true;
         }
 
 
@@ -322,7 +321,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         {
             var EnemyStatusScript = other.gameObject.GetComponent<EnemyStatus>();
             //ダメージを受けたとき
-            isDamege = true;
+            _isDamege = true;
             _audioSource.PlayOneShot(_audioClip[1]);
             //ノックバック処理
             rb.AddForce(-transform.forward * m_KnockBackSpeed, ForceMode.VelocityChange);
@@ -370,12 +369,21 @@ public class RigidbodyUnityChan : MonoBehaviour
         {
             animator.SetBool("GrenadBool", false);
             animator.Play("GrenadeThrow");
-            GrenadeNum--;
             GunModelMesh.enabled = true;
             _grenadCs.DrawArcBool = false;
+            if (IsGrenadeThrow) 
+            {
+                GrenadeNum--;
+            }
 
         }
         
+    }
+
+    private void GrenadeThrow() 
+    {
+        IsGrenadeThrow = true;
+        Debug.Log("dawdsd");
     }
 
 
@@ -387,7 +395,6 @@ public class RigidbodyUnityChan : MonoBehaviour
             allyStatus.SetHp(-_grenadDamege);
             slider.value = (float)CurrentHp / (float)allyStatus.GetMaxHp();
             CurrentHp = allyStatus.GetHp();
-            Debug.Log("ddd");
         }
     }
 
@@ -395,7 +402,7 @@ public class RigidbodyUnityChan : MonoBehaviour
     /// <summary> ADSしたときの処理 </summary>
     private void ADSBool() 
     {
-        if (Input.GetMouseButton(1) && !isDamege && Weapon.Gun == _weaponType)
+        if (Input.GetMouseButton(1) && !_isDamege && Weapon.Gun == _weaponType)
         {
             mesh_rot.SetActive(false);
             GunModel.SetActive(false);
@@ -406,7 +413,7 @@ public class RigidbodyUnityChan : MonoBehaviour
             CrossHair.SetActive(true);
 
         }
-        else if(!Input.GetMouseButton(1) && !isDamege && Weapon.Gun == _weaponType)
+        else if(!Input.GetMouseButton(1) && !_isDamege && Weapon.Gun == _weaponType)
         {
             mesh_rot.SetActive(true);
             GunModel.SetActive(true);
@@ -491,5 +498,5 @@ public class RigidbodyUnityChan : MonoBehaviour
 
 
 
-    private void DamegeFalse() => isDamege = false;
+    private void DamegeFalse() => _isDamege = false;
 }
