@@ -188,7 +188,7 @@ public class EnemySpawnScript : MonoBehaviour
             }
             if (_addWhale > _additionalWhaleCount) 
             {
-                Debug.Log("�Ă΂ꂽ");
+               
                 var RandomPlace = UnityEngine.Random.Range(0, spawnChildren.Length);
                 GameObject whale = Instantiate(_whalePrefab, spawnChildren[RandomPlace].transform.position, spawnChildren[RandomPlace].transform.rotation);
                 _additionalWhaleCount++;
