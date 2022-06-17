@@ -11,6 +11,8 @@ public class ReloScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bulletNumText;
     [SerializeField] private TextMeshProUGUI MaxBulletNumText;
     public bool ReloadBool = false;
+    [Header("プレイヤーのアニメーション")]
+    [SerializeField]private Animator _anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +45,7 @@ public class ReloScript : MonoBehaviour
                 MaxBulletNumText.text = shooting.MaxBulletNum.ToString();
                 ReloadBool = false;
             }
-
+            _anim.SetBool("ReloadBool", false);
         }
        
         if (Input.GetKeyDown(KeyCode.R) && !ReloadBool)
@@ -51,6 +53,7 @@ public class ReloScript : MonoBehaviour
             shooting.ReloedTime = 0;
             ReloadWaitTime = 0;
             ReloadBool = true;
+            _anim.SetBool("ReloadBool", true);
         }
     }
 }
