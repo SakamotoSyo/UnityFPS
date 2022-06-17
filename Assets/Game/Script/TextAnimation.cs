@@ -22,10 +22,10 @@ public class TextAnimation : MonoBehaviour
     private void Update()
     {
         _timeCount += Time.deltaTime;
-        if (_colorA <= 0.5 && !_isColorUp && _waitColor < _timeCount)
+        if (_colorA <= 0.8 && !_isColorUp && _waitColor < _timeCount)
         {
             _colorA += 0.04f;
-            _image.color = new Color(255, 255, 255, _colorA);
+            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _colorA);
             _timeCount = 0;
 
             if (_colorA > 0.5) 
@@ -36,7 +36,7 @@ public class TextAnimation : MonoBehaviour
         else if (_colorA >= 0 && _isColorUp && _waitColor < _timeCount) 
         {
             _colorA -= 0.04f;
-            _image.color = new Color(255, 255, 255, _colorA);
+            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _colorA);
             _timeCount = 0;
 
             if (_colorA == 0) 
