@@ -97,6 +97,8 @@ public class RigidbodyUnityChan : MonoBehaviour
     private bool _jumpNow = false;
     private bool _isDamege = false;
     public bool IsGrenadeThrow = false;
+    //回避しているとき
+    private bool _isRolling = false;
     private Weapon _weaponType = Weapon.Gun;
 
 
@@ -128,6 +130,7 @@ public class RigidbodyUnityChan : MonoBehaviour
         slider.value = (float)CurrentHp / (float)allyStatus.GetMaxHp();
 
         _granedNumText.text = GrenadeNum.ToString();
+       
     }
 
     void Update()
@@ -146,6 +149,8 @@ public class RigidbodyUnityChan : MonoBehaviour
 
         //キャラクターを動かす
         CharacterMove();
+
+        //回避行動
 
 
         //グレネードを投げる処理
@@ -242,6 +247,13 @@ public class RigidbodyUnityChan : MonoBehaviour
         {
             animator.SetBool("RunBool", false);
         }
+
+        
+        if (Input.GetKeyDown(KeyCode.C)) 
+        {
+            _isRolling = true;
+        }
+        animator.SetBool("RollingBool", _isRolling);
     }
 
     //画面のカーソルをロックする
@@ -317,14 +329,15 @@ public class RigidbodyUnityChan : MonoBehaviour
     {
         CountTime += Time.deltaTime;
         bool EnemyTag = other.gameObject.CompareTag("Zombie") || other.gameObject.CompareTag("Whale") || other.gameObject.CompareTag("Bullet");
-        if (EnemyTag && EnemyAttack && AttackDamegeWaitTime < CountTime)
+        if (EnemyTag && EnemyAttack && AttackDamegeWaitTime < CountTime && !_isRolling)
         {
             var EnemyStatusScript = other.gameObject.GetComponent<EnemyStatus>();
             //ダメージを受けたとき
             _isDamege = true;
             _audioSource.PlayOneShot(_audioClip[1]);
             //ノックバック処理
-            rb.AddForce(-transform.forward * m_KnockBackSpeed, ForceMode.VelocityChange);
+            var a = (other.gameObject.transform.position - transform.position).normalized;
+            rb.AddForce(-1 * a * m_KnockBackSpeed, ForceMode.VelocityChange);
             allyStatus.DamageHp(EnemyStatusScript.GetPower());
             slider.value = (float)CurrentHp / (float)allyStatus.GetMaxHp();
             //HPを減らす処理
@@ -380,13 +393,19 @@ public class RigidbodyUnityChan : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// グレネードを投げる処理
+    /// </summary>
     private void GrenadeThrow() 
     {
         IsGrenadeThrow = true;
         Debug.Log("dawdsd");
     }
 
-
+    /// <summary>
+    /// パーティクルに当たった時の処理
+    /// </summary>
+    /// <param name="other"></param>
     private void OnParticleCollision(GameObject other)
     {
 
@@ -431,12 +450,12 @@ public class RigidbodyUnityChan : MonoBehaviour
     {
         float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
         float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
-        #region
+        #region リコイル
         if (Input.GetMouseButton(0) && shotCs.shotCount > 0 && !reloCs.ReloadBool)
         {
             //リコイルパーターンを作る
-            Sumx = Random.Range(-0.3f, 0.3f);
-            Sumy = Random.Range(-0.3f, 0);
+            Sumx = Random.Range(-0.1f, 0.1f);
+            Sumy = Random.Range(-0.1f, 0);
         }
         if (!Input.GetMouseButton(0))
         {
@@ -498,5 +517,17 @@ public class RigidbodyUnityChan : MonoBehaviour
 
 
 
-    private void DamegeFalse() => _isDamege = false;
+    private void RollingFalse() 
+    {
+        _isRolling = false;
+        _isDamege = false;
+    }
+
+
+    private void DamegeFalse() 
+    {
+       _isDamege = false;
+        _isRolling = false;
+
+    }
 }
