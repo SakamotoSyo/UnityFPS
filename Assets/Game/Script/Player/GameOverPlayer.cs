@@ -17,11 +17,11 @@ public class GameOverPlayer : MonoBehaviour
     {
         _vcam2.SetActive(true);
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            _playStatus.SetHp(100);
-            _playStatus.SetMoney(-_playStatus.GetMoney());
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        //if (Input.GetKey(KeyCode.Space))
+        //{
+        //    _playStatus.SetHp(100);
+        //    _playStatus.SetMoney(-_playStatus.GetMoney());
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //}
     }
 }
