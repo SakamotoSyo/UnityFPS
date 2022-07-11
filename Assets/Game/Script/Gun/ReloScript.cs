@@ -10,6 +10,7 @@ public class ReloScript : MonoBehaviour
     private float ReloadWaitTime;
     [SerializeField] private TextMeshProUGUI bulletNumText;
     [SerializeField] private TextMeshProUGUI MaxBulletNumText;
+    [SerializeField] private GameObject _reloadingObj;
     public bool ReloadBool = false;
     [Header("プレイヤーのアニメーション")]
     [SerializeField]private Animator _anim;
@@ -25,6 +26,7 @@ public class ReloScript : MonoBehaviour
         ReloadWaitTime += Time.deltaTime;
         if (ReloadInterval < ReloadWaitTime) 
         {
+            _reloadingObj.SetActive(false);
             if (ReloadBool && shooting.MaxBulletNum != 0) 
             {
                 if (shooting.MaxBulletNum - (30 -shooting.shotCount) > 0)
@@ -50,6 +52,7 @@ public class ReloScript : MonoBehaviour
        
         if (Input.GetKeyDown(KeyCode.R) && !ReloadBool)
         {
+            _reloadingObj.SetActive(true);
             shooting.ReloedTime = 0;
             ReloadWaitTime = 0;
             ReloadBool = true;
