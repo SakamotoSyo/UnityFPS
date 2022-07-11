@@ -61,6 +61,7 @@ public class Shooting : MonoBehaviour
     [SerializeField] private ResultManager _resultManager;
     [SerializeField] private TextMeshProUGUI BulletNum;
     [SerializeField] private TextMeshProUGUI MaxBulletNumText;
+    [SerializeField] private GameObject _reloadTextObj;
 
     private bool ReloadBool = false;
     private int DestroyCount = 0;
@@ -91,6 +92,7 @@ public class Shooting : MonoBehaviour
 
         if (ReloadInterval < ReloedTime)
         {
+            _reloadTextObj.SetActive(false);
 
             if (Input.GetKey(KeyCode.Mouse0) && shotInterval < shotTime)
             {
@@ -120,6 +122,7 @@ public class Shooting : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.R) && !ReloadBool)
             {
                 ReloedTime = 0;
+                _reloadTextObj.SetActive(true);
                 ReloadBool = true;
             }
 
