@@ -36,6 +36,9 @@ public class ZombieScript : MonoBehaviour
     private float waitTime = 3f;
     private float countTime = 0;
 
+    //スピードに個体値をつける
+    private float RandomSpeed = 5;
+
     private void Start()
     {
         player = GameObject.Find("UnityChan");
@@ -45,9 +48,14 @@ public class ZombieScript : MonoBehaviour
         rbUnity = player.GetComponent<RigidbodyUnityChan>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        navMeshAgent.speed = 2f;
 
        enemyStatus.SetHp((enemyStatus.GetHp() * (1 - rbUnity.ZonbieCardNum)));
+
+        if (this.gameObject.tag == "Zombie") 
+        {
+            RandomSpeed = Random.Range(1.5f, 3.5f);
+            navMeshAgent.speed = RandomSpeed;
+        }
     }
 
     private void Update()
@@ -112,7 +120,7 @@ public class ZombieScript : MonoBehaviour
         if (DamegeFrag)
         {
             isDamage = false;
-            navMeshAgent.speed = 2f;
+            navMeshAgent.speed = RandomSpeed;
             DamegeFrag = false;
         }
 
@@ -120,7 +128,7 @@ public class ZombieScript : MonoBehaviour
         {
             isAttack = false;
             m_TailAttack = false;
-            navMeshAgent.speed = 2f;
+            navMeshAgent.speed = RandomSpeed;
             AttackFrag = false;        
         }
 
