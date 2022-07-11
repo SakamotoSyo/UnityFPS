@@ -574,7 +574,7 @@ RectTransform:
   m_GameObject: {fileID: 3813223297360261849}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9, y: 10, z: 1}
+  m_LocalScale: {x: 4, y: 5, z: 1}
   m_Children:
   - {fileID: 2250623761586013945}
   - {fileID: 4552175021418702636}
@@ -672,6 +672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootingCs: {fileID: 0}
   shootingObject: {fileID: 0}
+  _rbPlayer: {fileID: 0}
   CardReternAnim: {fileID: 11400000, guid: a485107085d268544a726b7f01c0874f, type: 2}
   CardBuyNumText: {fileID: 499945165515412772}
   CardNumImages: {fileID: 1380835521602670374}
